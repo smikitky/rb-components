@@ -13,7 +13,7 @@
   "author": "Soichiro Miki <smiki-tky@umin.ac.jp>",
   "repository": "https://github.com/smikitky/rb-components.git",
   "license": "MIT",
-  "dependencies": {
+  "devDependencies": {
     "bootstrap": "^3.3.7",
     "less": "^2.7.2",
     "react": "^15.5.4",
