@@ -11,5 +11,14 @@
     "react"
   ],
   "author": "Soichiro Miki <smiki-tky@umin.ac.jp>",
-  "license": "MIT"
+  "repository": "https://github.com/smikitky/rb-components.git",
+  "license": "MIT",
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "less": "^2.7.2",
+    "react": "^15.5.4",
+    "react-bootstrap": "^0.31.0",
+    "react-dom": "^15.5.4",
+    "webpack": "^2.6.1"
+  }
 }
