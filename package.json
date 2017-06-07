@@ -11,7 +11,7 @@
     "react"
   ],
   "author": "Soichiro Miki <smiki-tky@umin.ac.jp>",
-  "repository": "https://github.com/smikitky/rb-components.git",
+  "repository": "smikitky/rb-components",
   "license": "MIT",
   "devDependencies": {
     "babel-core": "^6.24.1",
