@@ -1,0 +1,15 @@
+{
+  "name": "@smikitky/rb-components",
+  "version": "0.1.0",
+  "description": "Components for React-Bootstrap",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "react-bootstrap",
+    "react"
+  ],
+  "author": "Soichiro Miki <smiki-tky@umin.ac.jp>",
+  "license": "MIT"
+}
