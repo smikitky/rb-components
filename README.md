@@ -13,3 +13,7 @@ These are written in ES2015 with `object-rest-spread`,
 so you'll need to transpile them using Babel or TypeScript set up for your project.
 
 Internal use only.
+
+# License
+
+MIT
