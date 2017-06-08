@@ -14,7 +14,7 @@ import Tab from 'react-bootstrap/lib/Tab';
 
 import ModalDemo from './modal';
 import CalendarDemo from './calendar';
-import ShrinkSelectDemo from './shrink-select';
+import SelectDemo from './select';
 
 const Demo = () => <div>
 	<Tabs id='demo-tabs' defaultActiveKey={'modals'} animation={false}>
@@ -25,7 +25,7 @@ const Demo = () => <div>
 			<CalendarDemo />
 		</Tab>
 		<Tab eventKey={'shrinkselect'} title='Select'>
-			<ShrinkSelectDemo />
+			<SelectDemo />
 		</Tab>
 		<Tab eventKey={'misc'} title='Misc'>
 			<LoadingIndicator />
