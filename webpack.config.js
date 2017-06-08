@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = {
 	entry: {
-		bundle: path.join(__dirname, 'lib', 'index.js'),
+		// bundle: path.join(__dirname, 'lib', 'index.js'),
 		demo: path.join(__dirname, 'demo', 'demo.js')
 	},
 	output: {
