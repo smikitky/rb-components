@@ -1,10 +1,13 @@
 const path = require('path');
 
 module.exports = {
-	entry: path.join(__dirname, 'src', 'index.js'),
+	entry: {
+		bundle: path.join(__dirname, 'lib', 'index.js'),
+		demo: path.join(__dirname, 'demo', 'demo.js')
+	},
 	output: {
 		path: path.join(__dirname, 'build'),
-		filename: 'rb-components.js'
+		filename: '[name].js'
 	},
 	module: {
 		rules: [
