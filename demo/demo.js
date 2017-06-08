@@ -15,6 +15,7 @@ import Tab from 'react-bootstrap/lib/Tab';
 import ModalDemo from './modal';
 import CalendarDemo from './calendar';
 import SelectDemo from './select';
+import ConditionEditorDemo from './condition-editor';
 
 const Demo = () => <div>
 	<Tabs id='demo-tabs' defaultActiveKey={'modals'} animation={false}>
@@ -26,6 +27,9 @@ const Demo = () => <div>
 		</Tab>
 		<Tab eventKey={'shrinkselect'} title='Select'>
 			<SelectDemo />
+		</Tab>
+		<Tab eventKey={'condition-editor'} title='ConditionEditor'>
+			<ConditionEditorDemo />
 		</Tab>
 		<Tab eventKey={'misc'} title='Misc'>
 			<LoadingIndicator />
