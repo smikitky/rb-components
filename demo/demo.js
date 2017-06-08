@@ -6,8 +6,14 @@ import React from 'react';
 import ReactDom from 'react-dom';
 
 import IconButton from '../lib/IconButton';
+import LoadingIndicator from '../lib/LoadingIndicator';
+
+const Demo = () => <div>
+	<LoadingIndicator />
+	<IconButton icon='home'>Hello</IconButton>
+</div>;
 
 ReactDom.render(
-	<IconButton icon='home'>Hello</IconButton>,
+	<Demo />,
 	document.getElementById('main')
 );
