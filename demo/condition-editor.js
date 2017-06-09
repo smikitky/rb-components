@@ -5,7 +5,11 @@ import ConditionEditor from '../lib/ConditionEditor';
 const keys = {
 	age: { caption: 'age', type: 'number' },
 	firstName: { caption: 'first name', type: 'text' },
-	familyName: { caption: 'family name', type: 'text' }
+	familyName: { caption: 'family name', type: 'text' },
+	sex: {
+		caption: 'sex', type: 'select',
+		spec: { options: ['M', 'F', 'O']}
+	}
 };
 
 export default class ConditionEditorDemo extends React.PureComponent {
