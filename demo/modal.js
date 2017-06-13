@@ -24,14 +24,14 @@ const onPromptClick = async () => {
 export default function ModalDemo() {
 	return <div>
 		<IconButton
-			icon='exclamation-triangle'
+			icon='alert'
 			bsStyle='warning'
 			onClick={onAlertClick}
 		>
 			Alert
 		</IconButton>
 		<IconButton
-			icon='question-circle'
+			icon='question-sign'
 			bsStyle='info'
 			onClick={onConfirmClick}
 		>
