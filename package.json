@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-	"lint": "eslint lib demo"
+    "lint": "eslint lib demo",
+	"precommit": "npm run lint"
   },
   "keywords": [
     "react-bootstrap",
@@ -23,6 +24,7 @@
     "eslint": "^4.0.0",
     "eslint-plugin-react": "^7.0.1",
     "file-loader": "^0.11.2",
+    "husky": "^0.13.4",
     "less": "^2.7.2",
     "less-loader": "^4.0.4",
     "react": "^15.5.4",
