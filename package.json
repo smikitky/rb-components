@@ -4,7 +4,8 @@
   "description": "Components for React-Bootstrap",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+	"lint": "eslint lib demo"
   },
   "keywords": [
     "react-bootstrap",
@@ -19,6 +20,8 @@
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-preset-react": "^6.24.1",
     "bootstrap": "^3.3.7",
+    "eslint": "^4.0.0",
+    "eslint-plugin-react": "^7.0.1",
     "file-loader": "^0.11.2",
     "less": "^2.7.2",
     "less-loader": "^4.0.4",

@@ -6,9 +6,7 @@ require('file-loader?name=rb-components.css!less-loader!../lib/rb-components.les
 import React from 'react';
 import ReactDom from 'react-dom';
 
-import IconButton from '../lib/IconButton';
 import LoadingIndicator from '../lib/LoadingIndicator';
-import { alert, confirm, prompt } from '../lib/Modal';
 import Tabs from 'react-bootstrap/lib/Tabs';
 import Tab from 'react-bootstrap/lib/Tab';
 

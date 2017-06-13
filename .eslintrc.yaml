@@ -1,0 +1,21 @@
+extends:
+  - eslint:recommended
+  - plugin:react/recommended
+parserOptions:
+  ecmaVersion: 2017
+  sourceType: module
+  ecmaFeatures:
+    jsx: true
+    experimentalObjectRestSpread: true
+env:
+  browser: true
+  es6: true
+  node: true
+globals:
+  React: true
+plugins:
+  - react
+rules:
+  "react/prop-types": [0]
+  "react/jsx-closing-bracket-location": [2, 'line-aligned']
+  no-useless-escape: [0]
