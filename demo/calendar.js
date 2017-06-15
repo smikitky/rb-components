@@ -16,7 +16,9 @@ export default class CalendarDemo extends React.PureComponent {
 
 	render() {
 		return <div>
+			<h3>Static Calendar</h3>
 			<Calendar />
+			<h3>Relative Date Picker</h3>
 			<RelativeDatePicker
 				value={this.state.relativeValue}
 				onChange={this.relativeChange}
