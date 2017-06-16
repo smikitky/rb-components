@@ -2,30 +2,18 @@ import React from 'react';
 
 import Calendar from '../lib/Calendar';
 import RelativeDatePicker from '../lib/RelativeDatePicker';
+import ValuePreview from './value-preview';
 
-export default class CalendarDemo extends React.PureComponent {
-	constructor(props) {
-		super(props);
-		this.state = { relativeValue: null };
-		this.relativeChange = this.relativeChange.bind(this);
-	}
+const CalendarDemo = () => {
+	return <div>
+		<h3>Static Calendar</h3>
+		<Calendar />
+		<h3>Relative Date Picker</h3>
+		<ValuePreview
+			component={RelativeDatePicker}
+			initialValue={null}
+		/>
+	</div>;
+};
 
-	relativeChange(value) {
-		this.setState({ relativeValue: value });
-	}
-
-	render() {
-		return <div>
-			<h3>Static Calendar</h3>
-			<Calendar />
-			<h3>Relative Date Picker</h3>
-			<RelativeDatePicker
-				value={this.state.relativeValue}
-				onChange={this.relativeChange}
-			/>
-			<div className='value'>
-				{JSON.stringify(this.state.relativeValue)}
-			</div>
-		</div>;
-	}
-}
+export default CalendarDemo;

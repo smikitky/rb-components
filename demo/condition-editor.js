@@ -1,6 +1,7 @@
 import React from 'react';
 
 import ConditionEditor from '../lib/ConditionEditor';
+import ValuePreview from './value-preview';
 
 const keys = {
 	age: { caption: 'age', type: 'number' },
@@ -12,33 +13,18 @@ const keys = {
 	}
 };
 
-export default class ConditionEditorDemo extends React.PureComponent {
-	constructor(props) {
-		super(props);
-		this.state = {
-			value: {
-				'$and': [
-					{ keyName: 'age', op: '==', value: 30 }
-				]
-			}
-		};
-		this.change = this.change.bind(this);
-	}
+const initialValue = {
+	'$and': [
+		{ keyName: 'age', op: '==', value: 30 }
+	]
+};
 
-	change(value) {
-		this.setState({ value });
-	}
+const ConditionEditorDemo = () => {
+	return <ValuePreview
+		component={ConditionEditor}
+		keys={keys}
+		initialValue={initialValue}
+	/>;
+};
 
-	render() {
-		return <div>
-			<ConditionEditor
-				keys={keys}
-				onChange={this.change}
-				value={this.state.value}
-			/>
-			<div className='value'>
-				{JSON.stringify(this.state.value)}
-			</div>
-		</div>;
-	}
-}
+export default ConditionEditorDemo;
