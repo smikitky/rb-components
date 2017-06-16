@@ -23,6 +23,9 @@ export default class CalendarDemo extends React.PureComponent {
 				value={this.state.relativeValue}
 				onChange={this.relativeChange}
 			/>
+			<div className='value'>
+				{JSON.stringify(this.state.relativeValue)}
+			</div>
 		</div>;
 	}
 }

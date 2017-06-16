@@ -36,7 +36,7 @@ export default class ConditionEditorDemo extends React.PureComponent {
 				onChange={this.change}
 				value={this.state.value}
 			/>
-			<div>
+			<div className='value'>
 				{JSON.stringify(this.state.value)}
 			</div>
 		</div>;

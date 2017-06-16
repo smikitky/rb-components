@@ -26,12 +26,18 @@ export default class ShrinkSelectDemo extends React.PureComponent {
 				value={shrinkValue}
 				onChange={this.shrinkChanged}
 			/>
+			<div className='value'>
+				{JSON.stringify(shrinkValue)}
+			</div>
 			<h3>MultiSelect</h3>
 			<MultiSelect
 				options={options}
 				selected={multiValue}
 				onChange={this.multiChanged}
 			/>
+			<div className='value'>
+				{JSON.stringify(multiValue)}
+			</div>
 		</div>;
 	}
 }
