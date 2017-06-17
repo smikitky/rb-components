@@ -16,7 +16,7 @@ globals:
 plugins:
   - react
 rules:
-  quotes: [2, 'single']
+  quotes: [2, 'single', { avoidEscape: true }]
   "react/prop-types": [0]
   "react/jsx-closing-bracket-location": [2, 'line-aligned']
   no-useless-escape: [0]
