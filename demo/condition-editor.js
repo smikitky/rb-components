@@ -20,11 +20,9 @@ const initialValue = {
 };
 
 const ConditionEditorDemo = () => {
-	return <ValuePreview
-		component={ConditionEditor}
-		keys={keys}
-		initialValue={initialValue}
-	/>;
+	return <ValuePreview initialValue={initialValue}>
+		<ConditionEditor keys={keys} />
+	</ValuePreview>;
 };
 
 export default ConditionEditorDemo;

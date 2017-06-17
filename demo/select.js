@@ -8,18 +8,13 @@ const options = ['Apple', 'Banana', 'Grape', 'Lemon', 'Melon', 'Orange'];
 export const ShrinkSelectDemo = () => {
 	return <div>
 		<h3>ShrinkSelect</h3>
-		<ValuePreview
-			component={ShrinkSelect}
-			options={options}
-			initialValue={options[0]}
-		/>
+		<ValuePreview initialValue={options[0]}>
+			<ShrinkSelect options={options} />
+		</ValuePreview>
 		<h3>MultiSelect</h3>
-		<ValuePreview
-			component={MultiSelect}
-			options={options}
-			valueProp='selected'
-			initialValue={[]}
-		/>
+		<ValuePreview valueProp='selected' initialValue={[]}>
+			<MultiSelect options={options} />
+		</ValuePreview>
 	</div>;
 };
 

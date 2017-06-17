@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { cloneElement } from 'react';
 
 /**
  * Displays the specified component with its value
@@ -17,17 +17,16 @@ export default class ValuePreview extends React.PureComponent {
 
 	render() {
 		const {
-			component: Component,
 			valueProp = 'value',
 			event = 'onChange',
-			...rest
+			children
 		} = this.props;
-		const params = {
+		const child = cloneElement(children, {
 			[valueProp]: this.state.value,
 			[event]: this.handleChange
-		};
+		});
 		return <div>
-			<Component {...rest} {...params} />
+			{child}
 			<div className='value'>
 				{JSON.stringify(this.state.value)}
 			</div>

@@ -9,10 +9,9 @@ const CalendarDemo = () => {
 		<h3>Static Calendar</h3>
 		<Calendar />
 		<h3>Relative Date Picker</h3>
-		<ValuePreview
-			component={RelativeDatePicker}
-			initialValue={null}
-		/>
+		<ValuePreview initialValue={null}>
+			<RelativeDatePicker />
+		</ValuePreview>
 	</div>;
 };
 
