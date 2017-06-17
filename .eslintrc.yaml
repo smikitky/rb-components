@@ -17,6 +17,7 @@ plugins:
   - react
 rules:
   quotes: [2, 'single', { avoidEscape: true }]
+  jsx-quotes: [2, 'prefer-single']
   "react/prop-types": [0]
   "react/jsx-closing-bracket-location": [2, 'line-aligned']
   no-useless-escape: [0]
