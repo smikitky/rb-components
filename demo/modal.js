@@ -1,7 +1,7 @@
 import React from 'react';
 
 import IconButton from '../lib/IconButton';
-import { alert, confirm, prompt } from '../lib/Modal';
+import { alert, confirm, prompt, withProgressDialog } from '../lib/Modal';
 
 const onAlertClick = async () => {
 	await alert('Alert!');
@@ -21,8 +21,14 @@ const onPromptClick = async () => {
 	await alert('Your input is: ' + answer);
 };
 
+const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+const onProgressClick = async () => {
+	withProgressDialog('Waiting for 2 seconds...', delay(2000));
+}
+
 export default function ModalDemo() {
-	return <div>
+	return <div className='btn-group'>
 		<IconButton
 			icon='alert'
 			bsStyle='warning'
@@ -43,6 +49,13 @@ export default function ModalDemo() {
 			onClick={onPromptClick}
 		>
 			Prompt
+		</IconButton>
+		<IconButton
+			icon='time'
+			bsStyle='success'
+			onClick={onProgressClick}
+		>
+			With Progress
 		</IconButton>
 	</div>;
 }
