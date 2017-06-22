@@ -7,8 +7,10 @@ import ValuePreview from './value-preview';
 
 const CalendarDemo = () => {
 	return <div>
-		<h3>Static Calendar</h3>
-		<Calendar />
+		<h3>Clickable Calendar</h3>
+		<ValuePreview event='onDateClick'>
+			<Calendar />
+		</ValuePreview>
 		<h3>Relative Date Picker</h3>
 		<ValuePreview initialValue={null}>
 			<RelativeDatePicker />
