@@ -10,7 +10,8 @@ const keys = {
 	sex: {
 		caption: 'sex', type: 'select',
 		spec: { options: ['M', 'F', 'O']}
-	}
+	},
+	date: { caption: 'date', type: 'date' }
 };
 
 const initialValue = {
