@@ -21,3 +21,4 @@ rules:
   "react/prop-types": [0]
   "react/jsx-closing-bracket-location": [2, 'line-aligned']
   no-useless-escape: [0]
+  semi: [2, 'always']
