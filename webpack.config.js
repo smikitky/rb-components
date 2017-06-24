@@ -1,9 +1,12 @@
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
 	entry: {
-		// bundle: path.join(__dirname, 'lib', 'index.js'),
-		demo: path.join(__dirname, 'demo', 'demo.js')
+		demo: [
+			'react-hot-loader/patch',
+			path.join(__dirname, 'demo', 'demo.js')
+		]
 	},
 	output: {
 		path: path.join(__dirname, 'build'),
@@ -18,4 +21,13 @@ module.exports = {
 			}
 		]
 	},
+	plugins: [
+		new webpack.HotModuleReplacementPlugin()
+	],
+	devServer: {
+		host: process.env.IP ? process.env.IP : 'localhost',
+		disableHostCheck: true,
+		hot: true,
+		compress: true
+	}
 };

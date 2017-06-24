@@ -4,6 +4,7 @@
   "description": "Components for React-Bootstrap",
   "main": "index.js",
   "scripts": {
+    "start": "webpack-dev-server",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint lib demo",
     "lint-fix": "eslint --fix lib demo",
@@ -31,7 +32,9 @@
     "react": "^15.6.1",
     "react-bootstrap": "^0.31.0",
     "react-dom": "^15.6.1",
-    "webpack": "^3.0.0"
+    "react-hot-loader": "^3.0.0-beta.7",
+    "webpack": "^3.0.0",
+    "webpack-dev-server": "^2.5.0"
   },
   "dependencies": {
     "classnames": "^2.2.5",

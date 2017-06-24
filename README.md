@@ -45,6 +45,14 @@ These packages are marked as `dependencies`:
 - `classnames`
 - `moment`
 
+# Demo
+
+A small demo app is available via webpack-dev-server.
+
+```
+npm start
+```
+
 # Note
 
 This package is basically intended for internal use only.

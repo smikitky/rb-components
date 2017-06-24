@@ -25,7 +25,7 @@ const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 const onProgressClick = async () => {
 	withProgressDialog('Waiting for 2 seconds...', delay(2000));
-}
+};
 
 export default function ModalDemo() {
 	return <div className='btn-group'>
