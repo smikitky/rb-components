@@ -7,6 +7,7 @@ import Tab from 'react-bootstrap/lib/Tab';
 import ModalDemo from './modal';
 import CalendarDemo from './calendar';
 import SelectDemo from './select';
+import ColorDemo from './color';
 import ConditionEditorDemo from './condition-editor';
 
 const DemoApp = () => <div>
@@ -23,8 +24,14 @@ const DemoApp = () => <div>
 		<Tab eventKey={'condition-editor'} title='ConditionEditor'>
 			<ConditionEditorDemo />
 		</Tab>
+		<Tab eventKey={'color'} title='Color'>
+			<ColorDemo />
+		</Tab>
 		<Tab eventKey={'misc'} title='Misc'>
-			<LoadingIndicator />
+			<div>
+				<h3>Loading Indicator</h3>
+				<LoadingIndicator />
+			</div>
 		</Tab>
 	</Tabs>
 </div>;

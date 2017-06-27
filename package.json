@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "classnames": "^2.2.5",
-    "moment": "^2.18.1"
+    "moment": "^2.18.1",
+    "tinycolor2": "^1.4.1"
   }
 }
