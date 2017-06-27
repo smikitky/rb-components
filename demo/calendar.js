@@ -16,7 +16,7 @@ const DropdownDatePickerDemo = props => <div>
 const CalendarDemo = () => {
 	return <div>
 		<h3>Clickable Calendar</h3>
-		<ValuePreview event='onDateClick'>
+		<ValuePreview initialValue='2017-01-01'>
 			<Calendar />
 		</ValuePreview>
 		<h3>Dropdown Date Picker</h3>
