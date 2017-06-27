@@ -28,28 +28,38 @@ const onProgressClick = async () => {
 };
 
 export default function ModalDemo() {
-	return <div className='btn-group'>
-		<IconButton
-			icon='alert'
-			bsStyle='warning'
-			onClick={onAlertClick}
-		>
-			Alert
-		</IconButton>
-		<IconButton
-			icon='question-sign'
-			bsStyle='info'
-			onClick={onConfirmClick}
-		>
-			Confirm
-		</IconButton>
-		<IconButton
-			icon='comment'
-			bsStyle='primary'
-			onClick={onPromptClick}
-		>
-			Prompt
-		</IconButton>
+	return <div>
+		<h3>Standard Dialogs</h3>
+		<p>
+			Utility modal dialogs.
+			These can be used similarly to standard dialogs like <code>alert()</code> and <code>prompt()</code>,
+			but are non-blocking and have Promise support.
+		</p>
+		<div className='btn-group'>
+			<IconButton
+				icon='alert'
+				bsStyle='warning'
+				onClick={onAlertClick}
+			>
+				Alert
+			</IconButton>
+			<IconButton
+				icon='question-sign'
+				bsStyle='info'
+				onClick={onConfirmClick}
+			>
+				Confirm
+			</IconButton>
+			<IconButton
+				icon='comment'
+				bsStyle='primary'
+				onClick={onPromptClick}
+			>
+				Prompt
+			</IconButton>
+		</div>
+		<h3>Promise Wrapper</h3>
+		<p>You can wrap any promise with this function to display a modal progress bar.</p>
 		<IconButton
 			icon='time'
 			bsStyle='success'
