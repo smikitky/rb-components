@@ -40,10 +40,12 @@ The followings should be manually enabled in your project:
 - Font Awesome (CSS, optional)
 - Bootstrap (CSS Only)
 
-These packages are marked as `dependencies`:
+These packages are marked as `dependencies`. These will not be included
+in your final bundle unless you actually use the relevant components.
 
 - `classnames`
 - `moment`
+- `tinycolor2`
 
 # Demo
 
