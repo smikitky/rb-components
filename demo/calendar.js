@@ -31,6 +31,10 @@ const CalendarDemo = () => {
 		<ValuePreview initialValue={{ from: null, to: null }}>
 			<DateRangePicker />
 		</ValuePreview>
+		<h3>Custom Date Format</h3>
+		<ValuePreview initialValue={'31 Aug 1980'}>
+			<DropdownDatePicker format='DD MMM YYYY' />
+		</ValuePreview>
 	</div>;
 };
 
