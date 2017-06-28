@@ -4,6 +4,7 @@ import ColorPicker, { ColorPalette } from '../lib/ColorPicker';
 import ValuePreview from './value-preview';
 
 const ColorPickers = props => <div>
+	<h4>Inline</h4>
 	<ColorPicker showColorCode {...props} />
 	&ensp;
 	<ColorPicker bsSize='xs' {...props} />
@@ -13,6 +14,8 @@ const ColorPickers = props => <div>
 	<ColorPicker noCaret showColorCode {...props} />
 	&ensp;
 	<ColorPicker boxPreview showColorCode {...props} />
+	<h4>Block</h4>
+	<ColorPicker block boxPreview showColorCode bsSize='sm' {...props} />
 </div>;
 
 const ColorDemo = () => {
