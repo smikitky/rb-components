@@ -11,6 +11,8 @@ const ColorPickers = props => <div>
 	<ColorPicker noCaret {...props} />
 	&ensp;
 	<ColorPicker noCaret showColorCode {...props} />
+	&ensp;
+	<ColorPicker boxPreview showColorCode {...props} />
 </div>;
 
 const ColorDemo = () => {
