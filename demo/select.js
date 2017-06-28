@@ -1,5 +1,6 @@
 import React from 'react';
 import ShrinkSelect from '../lib/ShrinkSelect';
+import BlockSelect from '../lib/BlockSelect';
 import MultiSelect from '../lib/MultiSelect';
 import ValuePreview from './value-preview';
 
@@ -16,6 +17,10 @@ export const ShrinkSelectDemo = () => {
 		<h3>ShrinkSelect</h3>
 		<ValuePreview initialValue={options[0]}>
 			<ShrinkSelect options={options} />
+		</ValuePreview>
+		<h3>BlockSelect</h3>
+		<ValuePreview initialValue={options[0]}>
+			<BlockSelect options={options} />
 		</ValuePreview>
 		<h3>MultiSelect</h3>
 		<ValuePreview initialValue={[]}>
