@@ -1,11 +1,11 @@
 import React from 'react';
-
 import ArrayEditor from '../lib/ArrayEditor';
 import ValuePreview from './value-preview';
 import ColorPicker from '../lib/ColorPicker';
 import DropdownDatePicker from '../lib/DropdownDatePicker';
 import Calendar from '../lib/Calendar';
 import PropertyEditor from '../lib/PropertyEditor';
+import * as types from '../lib/PropertyEditorTypes';
 
 const ColorEditor = props => <ColorPicker showColorCode bsSize='sm' {...props} />;
 
@@ -14,6 +14,10 @@ const ColorArrayEditor = props => (
 );
 
 const properties = [
+	{ key: 'text', caption: 'Text', editor: types.text({ placeholder: 'zip code' }) },
+	{ key: 'number', caption: 'Number', editor: types.number({ placeholder: 'age', min: 0, max: 10 }) },
+	{ key: 'check', caption: 'Check', editor: types.checkbox({ label: 'yes' }) },
+	{ key: 'textarea', editor: types.textarea() },
 	{ key: 'color', caption: 'Color', editor: ColorEditor },
 	{ key: 'colors', caption: 'Colors', editor: ColorArrayEditor },
 	{ key: 'date', caption: 'Date', editor: DropdownDatePicker },
@@ -21,7 +25,7 @@ const properties = [
 ];
 
 const complaints = {
-	date: 'This date is not valid.'
+	date: 'This is an example error message.'
 };
 
 const PropertyEditorDemo = () => {
