@@ -14,7 +14,14 @@ const ColorArrayEditor = props => (
 );
 
 const properties = [
-	{ key: 'text', caption: 'Text', editor: types.text({ placeholder: 'zip code' }) },
+	{
+		key: 'text',
+		caption: 'Text',
+		editor: types.text({
+			placeholder: 'zip code (111-2222)',
+			regex: /^\d{0,3}\-?\d{0,4}$/
+		})
+	},
 	{ key: 'number', caption: 'Number', editor: types.number({ placeholder: 'age', min: 0, max: 10 }) },
 	{ key: 'check', caption: 'Check', editor: types.checkbox({ label: 'yes' }) },
 	{ key: 'textarea', editor: types.textarea() },
