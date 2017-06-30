@@ -42,7 +42,7 @@ const PropertyEditorDemo = () => {
 			<ArrayEditor editor={ColorEditor} newItemValue='#ff00ff' />
 		</ValuePreview>
 		<h3>Property Editor</h3>
-		<ValuePreview initialValue={[]}>
+		<ValuePreview initialValue={{}}>
 			<PropertyEditor properties={properties} complaints={complaints} />
 		</ValuePreview>
 	</div>;

@@ -42,6 +42,7 @@
   "dependencies": {
     "classnames": "^2.2.5",
     "moment": "^2.18.1",
+    "prop-types": "^15.5.10",
     "tinycolor2": "^1.4.1"
   }
 }
