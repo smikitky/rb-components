@@ -12,7 +12,9 @@ import ConditionEditorDemo from './condition-editor';
 import PropertyEditorDemo from './property-editor';
 
 const DemoApp = () => <div>
-	<Tabs id='demo-tabs' defaultActiveKey={'modals'} animation={false}>
+	<Tabs id='demo-tabs' defaultActiveKey={'modals'} animation={false}
+		mountOnEnter={true} unmountOnExit={true}
+	>
 		<Tab eventKey={'modals'} title='Modals'>
 			<ModalDemo />
 		</Tab>
