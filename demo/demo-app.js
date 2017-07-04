@@ -1,6 +1,5 @@
 import React from 'react';
 
-import LoadingIndicator from '../lib/LoadingIndicator';
 import Tabs from 'react-bootstrap/lib/Tabs';
 import Tab from 'react-bootstrap/lib/Tab';
 
@@ -10,6 +9,7 @@ import SelectDemo from './select';
 import ColorDemo from './color';
 import ConditionEditorDemo from './condition-editor';
 import PropertyEditorDemo from './property-editor';
+import MiscDemo from './misc';
 
 const DemoApp = () => <div>
 	<Tabs id='demo-tabs' defaultActiveKey={'modals'} animation={false}
@@ -34,10 +34,7 @@ const DemoApp = () => <div>
 			<PropertyEditorDemo />
 		</Tab>
 		<Tab eventKey={'misc'} title='Misc'>
-			<div>
-				<h3>Loading Indicator</h3>
-				<LoadingIndicator />
-			</div>
+			<MiscDemo />
 		</Tab>
 	</Tabs>
 </div>;
