@@ -1,7 +1,7 @@
 import React from 'react';
 
 import IconButton from '../lib/IconButton';
-import { alert, confirm, prompt, withProgressDialog } from '../lib/Modal';
+import { alert, confirm, choice, prompt, withProgressDialog } from '../lib/Modal';
 
 const onAlertClick = async () => {
 	await alert('Alert!');
@@ -14,6 +14,15 @@ const onConfirmClick = async () => {
 	} else {
 		await alert('You clicked Cancel');
 	}
+};
+
+const onChoiceClick = async () => {
+	const choices = {
+		'Yes, I will delete it': { response: 'yes', style: 'danger' },
+		'No, I will reconsider it': { response: 'no', style: 'default' }
+	};
+	const answer = await choice('Select your decision', choices);
+	await alert('You selected: ' + answer);
 };
 
 const onPromptClick = async () => {
@@ -49,6 +58,13 @@ export default function ModalDemo() {
 				onClick={onConfirmClick}
 			>
 				Confirm
+			</IconButton>
+			<IconButton
+				icon='list'
+				bsStyle='success'
+				onClick={onChoiceClick}
+			>
+				Choice
 			</IconButton>
 			<IconButton
 				icon='comment'
