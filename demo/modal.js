@@ -1,7 +1,12 @@
 import React from 'react';
 
 import IconButton from '../lib/IconButton';
-import { alert, confirm, choice, prompt, withProgressDialog } from '../lib/Modal';
+import {
+	alert, confirm, choice, prompt,
+	modal, CustomDialog,
+	withProgressDialog
+} from '../lib/Modal';
+import Modal from 'react-bootstrap/lib/Modal';
 
 const onAlertClick = async () => {
 	await alert('Alert!');
@@ -28,6 +33,28 @@ const onChoiceClick = async () => {
 const onPromptClick = async () => {
 	const answer = await prompt('Input something');
 	await alert('Your input is: ' + answer);
+};
+
+const MyCustomDialog = props => {
+	return <CustomDialog {...props}>
+		<h2>Hello, {props.message}</h2>
+		<Modal.Body>
+			<IconButton
+				icon='star'
+				onClick={props.onResolve}
+				bsStyle='primary'
+			>
+				OK
+			</IconButton>
+		</Modal.Body>
+	</CustomDialog>;
+};
+
+const onCustomClick = async () => {
+	modal(
+		MyCustomDialog,
+		{ message: 'World', bsSize: 'small', backdrop: true }
+	);
 };
 
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -65,6 +92,13 @@ export default function ModalDemo() {
 				onClick={onChoiceClick}
 			>
 				Choice
+			</IconButton>
+			<IconButton
+				icon='star'
+				bsStyle='danger'
+				onClick={onCustomClick}
+			>
+				Custom Dialog
 			</IconButton>
 			<IconButton
 				icon='comment'
