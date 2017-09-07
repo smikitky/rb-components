@@ -4,8 +4,8 @@ Project-agnostic component sets used with react-bootstrap.
 
 # Usage
 
-Package consumers should directly `require` or `import` components
-in the `lib` directory.
+Like other components of react-bootstrap, package consumers should
+directly `require` or `import` components in the `lib` directory.
 
 ```js
 import IconButton from '@smikitky/rb-components/lib/IconButton';
@@ -15,6 +15,10 @@ These are written in ES2015 with `object-rest-spread`,
 so you'll need to transpile them using Babel or TypeScript set up for your project.
 Scripts in `node_modules` are often configured to be ignored, so you may have to
 specify that scripts under `@smikitky/rb-components` should be transpiled.
+
+Aliasing to the `rb-components/lib` is also a good idea.
+
+Therefore your `webpack.config.js` would look like this:
 
 ```js
 loaders: [{
@@ -32,6 +36,7 @@ resolve: {
 ```
 
 Polyfill scripts (like Promises) are not included.
+You should provide your own polyfills if necessary.
 
 # Requirements
 
