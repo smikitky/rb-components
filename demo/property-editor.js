@@ -39,7 +39,10 @@ const PropertyEditorDemo = () => {
 	return <div>
 		<h3>Array Editor</h3>
 		<ValuePreview initialValue={[]}>
-			<ArrayEditor editor={ColorEditor} newItemValue='#ff00ff' />
+			<ArrayEditor
+				editor={ColorEditor}
+				newItemValue={() => Math.random() > 0.5 ? '#ff00ff' : '#00ffff'}
+			/>
 		</ValuePreview>
 		<h3>Property Editor</h3>
 		<ValuePreview initialValue={{}}>
