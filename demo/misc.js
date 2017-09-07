@@ -10,6 +10,13 @@ const MiscDemo = () => {
 			<li><LoadingIndicator icon='fa-spinner' /></li>
 			<li><LoadingIndicator icon='fa-cog' /></li>
 		</ul>
+		<h3>Loading Indicators with Delay</h3>
+		<ul>
+			<li><LoadingIndicator delay={500} /></li>
+			<li><LoadingIndicator icon='repeat' delay={1000} /></li>
+			<li><LoadingIndicator icon='fa-spinner' delay={1500} /></li>
+			<li><LoadingIndicator icon='fa-cog' delay={2000} /></li>
+		</ul>
 	</div>;
 };
 
