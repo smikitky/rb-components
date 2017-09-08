@@ -3,9 +3,10 @@ import React from 'react';
 import IconButton from '../lib/IconButton';
 import {
 	alert, confirm, choice, prompt,
-	modal, CustomDialog,
+	modal,
 	withProgressDialog
-} from '../lib/Modal';
+} from '../lib/modal';
+import CustomDialog from '../lib/CustomDialog';
 import Modal from 'react-bootstrap/lib/Modal';
 
 const onAlertClick = async () => {
