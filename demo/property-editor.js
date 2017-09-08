@@ -9,9 +9,7 @@ import * as types from '../lib/editor-types';
 
 const ColorEditor = props => <ColorPicker showColorCode bsSize='sm' {...props} />;
 
-const ColorArrayEditor = props => (
-	<ArrayEditor inline editor={ColorEditor} newItemValue='#ffff88' {...props} />
-);
+const ColorArrayEditor = types.inlineArrayOf(ColorEditor, '#ffff88');
 
 const properties = [
 	{
