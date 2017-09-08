@@ -23,6 +23,7 @@ const properties = [
 		})
 	},
 	{ key: 'number', caption: 'Number', editor: types.number({ placeholder: 'age', min: 0, max: 10 }) },
+	{ key: 'integer', caption: 'Int', editor: types.integer() },
 	{ key: 'check', caption: 'Check', editor: types.checkbox({ label: 'yes' }) },
 	{ key: 'textarea', editor: types.textarea() },
 	{ key: 'color', caption: 'Color', editor: ColorEditor },
