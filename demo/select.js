@@ -15,10 +15,12 @@ const CustomRenderer = props => (
 export const ShrinkSelectDemo = () => {
 	return <div>
 		<h3>ShrinkSelect</h3>
+		<p>Like <code>&lt;select&gt;</code>, but resizes itself according to the selection.</p>
 		<ValuePreview initialValue={options[0]}>
 			<ShrinkSelect options={options} />
 		</ValuePreview>
 		<h3>BlockSelect</h3>
+		<p>Like <code>&lt;select&gt;</code>, but has the same appearance as <code>ShrinkSelect</code>.</p>
 		<ValuePreview initialValue={options[0]}>
 			<BlockSelect options={options} />
 		</ValuePreview>
