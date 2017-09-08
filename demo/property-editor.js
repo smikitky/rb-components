@@ -5,7 +5,7 @@ import ColorPicker from '../lib/ColorPicker';
 import DropdownDatePicker from '../lib/DropdownDatePicker';
 import Calendar from '../lib/Calendar';
 import PropertyEditor from '../lib/PropertyEditor';
-import * as types from '../lib/PropertyEditorTypes';
+import * as types from '../lib/editor-types';
 
 const ColorEditor = props => <ColorPicker showColorCode bsSize='sm' {...props} />;
 
