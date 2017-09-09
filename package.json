@@ -32,7 +32,7 @@
     "less": "^2.7.2",
     "less-loader": "^4.0.4",
     "react": "^15.6.1",
-    "react-bootstrap": "^0.31.0",
+    "react-bootstrap": "^0.31.3",
     "react-dom": "^15.6.1",
     "react-hot-loader": "^3.0.0-beta.7",
     "style-loader": "^0.18.2",
