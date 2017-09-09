@@ -2,20 +2,26 @@
 	text-align: center;
 	display: inline-block;
 	.calendar-nav { text-align: center; }
-	td, th {
-		width: 100% /7;
-		padding: 0 2px;
-	}
-	td.selected {
-		background-color: #ddd;
-	}
 	.calendar-table {
 		margin-left: auto;
 		margin-right: auto;
+		cursor: pointer;
+		td, th {
+			width: 100% /7;
+			padding: 0 2px;
+		}
+		td:hover {
+			background-color: #eee;
+		}
+		td.selected {
+			background-color: #ddd;
+		}
+		&.disabled {
+			cursor: not-allowed;
+			td:hover { background-color: transparent; }
+			td.selected { background-color: #ddd; }
+			color: gray;
+		}
 	}
 	span.glyphicon { cursor: pointer; }
-	td:hover {
-		cursor: pointer;
-		background-color: #eee;
-	}
 }
