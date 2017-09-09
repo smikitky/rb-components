@@ -5,6 +5,7 @@ import ColorPicker from '../lib/ColorPicker';
 import DropdownDatePicker from '../lib/DropdownDatePicker';
 import Calendar from '../lib/Calendar';
 import PropertyEditor from '../lib/PropertyEditor';
+import Slider, { Range } from '../lib/Slider';
 import * as types from '../lib/editor-types';
 
 const ColorEditor = props => <ColorPicker showColorCode bsSize='sm' {...props} />;
@@ -27,7 +28,9 @@ const properties = [
 	{ key: 'color', caption: 'Color', editor: ColorEditor },
 	{ key: 'colors', caption: 'Colors', editor: ColorArrayEditor },
 	{ key: 'date', caption: 'Date', editor: DropdownDatePicker },
-	{ key: 'date2', caoption: 'Date 2', editor: Calendar }
+	{ key: 'date2', caption: 'Date 2', editor: Calendar },
+	{ key: 'slider', caption: 'Slider', editor: Slider },
+	{ key: 'range', caption: 'Range', editor: Range }
 ];
 
 const complaints = {
