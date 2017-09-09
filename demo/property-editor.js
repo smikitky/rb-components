@@ -37,14 +37,14 @@ const complaints = {
 const PropertyEditorDemo = () => {
 	return <div>
 		<h3>Array Editor</h3>
-		<ValuePreview initialValue={[]}>
+		<ValuePreview initialValue={[]} canDisable>
 			<ArrayEditor
 				editor={ColorEditor}
 				newItemValue={() => Math.random() > 0.5 ? '#ff00ff' : '#00ffff'}
 			/>
 		</ValuePreview>
 		<h3>Property Editor</h3>
-		<ValuePreview initialValue={{}}>
+		<ValuePreview initialValue={{}} canDisable>
 			<PropertyEditor properties={properties} complaints={complaints} />
 		</ValuePreview>
 	</div>;
