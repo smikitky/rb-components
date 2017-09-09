@@ -20,15 +20,15 @@ const CalendarDemo = () => {
 			<Calendar />
 		</ValuePreview>
 		<h3>Dropdown Date Picker</h3>
-		<ValuePreview initialValue='2017-01-01'>
+		<ValuePreview initialValue='2017-01-01' canDisable>
 			<DropdownDatePickerDemo />
 		</ValuePreview>
 		<h3>Relative Date Picker</h3>
-		<ValuePreview initialValue={null}>
+		<ValuePreview initialValue={null} canDisable>
 			<RelativeDatePicker />
 		</ValuePreview>
 		<h3>Date Range Picker</h3>
-		<ValuePreview initialValue={{ from: null, to: null }}>
+		<ValuePreview initialValue={{ from: null, to: null }} canDisable>
 			<DateRangePicker />
 		</ValuePreview>
 		<h3>Custom Date Format</h3>
