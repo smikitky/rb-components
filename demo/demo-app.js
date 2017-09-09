@@ -10,6 +10,7 @@ import ColorDemo from './color';
 import ConditionEditorDemo from './condition-editor';
 import PropertyEditorDemo from './property-editor';
 import MiscDemo from './misc';
+import SliderDemo from './slider';
 
 const DemoApp = () => <div>
 	<Tabs id='demo-tabs' defaultActiveKey={'modals'} animation={false}
@@ -32,6 +33,9 @@ const DemoApp = () => <div>
 		</Tab>
 		<Tab eventKey={'property'} title='PropertyEditor'>
 			<PropertyEditorDemo />
+		</Tab>
+		<Tab eventKey={'slider'} title='Slider'>
+			<SliderDemo />
 		</Tab>
 		<Tab eventKey={'misc'} title='Misc'>
 			<MiscDemo />
