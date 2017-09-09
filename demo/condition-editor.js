@@ -21,7 +21,7 @@ const initialValue = {
 };
 
 const ConditionEditorDemo = () => {
-	return <ValuePreview initialValue={initialValue}>
+	return <ValuePreview initialValue={initialValue} canDisable>
 		<ConditionEditor keys={keys} />
 	</ValuePreview>;
 };
