@@ -16,7 +16,7 @@ export const ShrinkSelectDemo = () => {
 	return <div>
 		<h3>ShrinkSelect</h3>
 		<p>Like <code>&lt;select&gt;</code>, but resizes itself according to the selection.</p>
-		<ValuePreview initialValue={options[0]}>
+		<ValuePreview initialValue={options[0]} canDisable>
 			<ShrinkSelect options={options} />
 		</ValuePreview>
 		<h3>BlockSelect</h3>
@@ -25,15 +25,15 @@ export const ShrinkSelectDemo = () => {
 			<BlockSelect options={options} />
 		</ValuePreview>
 		<h3>MultiSelect</h3>
-		<ValuePreview initialValue={[]}>
+		<ValuePreview initialValue={[]} canDisable>
 			<MultiSelect options={options} />
 		</ValuePreview>
 		<h3>With Custom Renderer</h3>
-		<ValuePreview initialValue={[]}>
+		<ValuePreview initialValue={[]} canDisable>
 			<MultiSelect options={options} renderer={CustomRenderer} />
 		</ValuePreview>
 		<h3>MultiSelect Checkbox Array</h3>
-		<ValuePreview initialValue={[]}>
+		<ValuePreview initialValue={[]} canDisable>
 			<MultiSelect options={options} type='checkbox' />
 		</ValuePreview>
 	</div>;
