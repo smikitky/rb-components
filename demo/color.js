@@ -21,7 +21,7 @@ const ColorPickers = props => <div>
 const ColorDemo = () => {
 	return <div>
 		<h3>Dropdown Color Pickers</h3>
-		<ValuePreview initialValue={'#ff0000'} >
+		<ValuePreview initialValue={'#ff0000'} canDisable>
 			<ColorPickers />
 		</ValuePreview>
 		<h3>Static Color Palette</h3>
