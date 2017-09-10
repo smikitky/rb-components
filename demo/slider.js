@@ -2,11 +2,18 @@ import React from 'react';
 import Slider, { Range } from '../lib/Slider';
 import ValuePreview from './value-preview';
 
+const Sliders = props => (
+	<div>
+		<Slider min={10} max={90} step={2} {...props} />
+		<Slider block min={10} max={90} step={2} {...props} />
+	</div>
+);
+
 export const SliderDemo = () => {
 	return <div>
 		<h3>Slider</h3>
 		<ValuePreview initialValue={50} canDisable>
-			<Slider min={10} max={90} step={2} />
+			<Sliders />
 		</ValuePreview>
 		<h3>Range</h3>
 		<ValuePreview initialValue={[10, 90]} canDisable>
