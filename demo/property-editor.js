@@ -28,6 +28,8 @@ const properties = [
 	{ key: 'textarea', editor: types.textarea() },
 	{ key: 'color', caption: 'Color', editor: ColorEditor },
 	{ key: 'colors', caption: 'Colors', editor: ColorArrayEditor },
+	{ key: 'select', caption: 'Selection', editor: types.select(['a', 'b', 'c']) },
+	{ key: 'select2', caption: 'Selection', editor: types.shrinkSelect({ y: 'Yes', n: 'No' }) },
 	'Sub Heading',
 	{ key: 'date', caption: 'Date', editor: DropdownDatePicker },
 	{ key: 'date2', caption: 'Date 2', editor: Calendar },
