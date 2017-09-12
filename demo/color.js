@@ -25,7 +25,7 @@ const ColorDemo = () => {
 			<ColorPickers />
 		</ValuePreview>
 		<h3>Static Color Palette</h3>
-		<ValuePreview initialValue={'#ff0000'}>
+		<ValuePreview initialValue={'#ff0000'} canDisable>
 			<ColorPalette />
 		</ValuePreview>
 	</div>;
