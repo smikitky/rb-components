@@ -28,6 +28,7 @@ const properties = [
 	{ key: 'textarea', editor: types.textarea() },
 	{ key: 'color', caption: 'Color', editor: ColorEditor },
 	{ key: 'colors', caption: 'Colors', editor: ColorArrayEditor },
+	'Sub Heading',
 	{ key: 'date', caption: 'Date', editor: DropdownDatePicker },
 	{ key: 'date2', caption: 'Date 2', editor: Calendar },
 	{ key: 'slider', caption: 'Slider', editor: Slider },
