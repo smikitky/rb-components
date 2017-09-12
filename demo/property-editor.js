@@ -30,6 +30,11 @@ const properties = [
 	{ key: 'colors', caption: 'Colors', editor: ColorArrayEditor },
 	{ key: 'select', caption: 'Selection', editor: types.select(['a', 'b', 'c']) },
 	{ key: 'select2', caption: 'Selection', editor: types.shrinkSelect({ y: 'Yes', n: 'No' }) },
+	{
+		key: 'multi',
+		caption: 'Multi Select',
+		editor: types.multiSelect(['green', 'black', 'blue', 'red', 'pink', 'orange'])
+	},
 	'Sub Heading',
 	{ key: 'date', caption: 'Date', editor: DropdownDatePicker },
 	{ key: 'date2', caption: 'Date 2', editor: Calendar },
