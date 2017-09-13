@@ -11,6 +11,7 @@ const MiscDemo = () => {
 			<li><LoadingIndicator icon='fa-cog' /></li>
 		</ul>
 		<h3>Loading Indicators with Delay</h3>
+		<p>Remains hidden after the mounting for the specified amount of time.</p>
 		<ul>
 			<li><LoadingIndicator delay={500} /></li>
 			<li><LoadingIndicator icon='repeat' delay={1000} /></li>

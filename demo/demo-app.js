@@ -8,6 +8,7 @@ import CalendarDemo from './calendar';
 import SelectDemo from './select';
 import ColorDemo from './color';
 import ConditionEditorDemo from './condition-editor';
+import ArrayEditorDemo from './array-editor';
 import PropertyEditorDemo from './property-editor';
 import MiscDemo from './misc';
 import SliderDemo from './slider';
@@ -30,6 +31,9 @@ const DemoApp = () => <div>
 		</Tab>
 		<Tab eventKey={'color'} title='Color'>
 			<ColorDemo />
+		</Tab>
+		<Tab eventKey={'array'} title='Array'>
+			<ArrayEditorDemo />
 		</Tab>
 		<Tab eventKey={'property'} title='PropertyEditor'>
 			<PropertyEditorDemo />

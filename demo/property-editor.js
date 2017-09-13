@@ -1,5 +1,4 @@
 import React from 'react';
-import ArrayEditor from '../lib/ArrayEditor';
 import ValuePreview from './value-preview';
 import ColorPicker from '../lib/ColorPicker';
 import DropdownDatePicker from '../lib/DropdownDatePicker';
@@ -48,14 +47,11 @@ const complaints = {
 
 const PropertyEditorDemo = () => {
 	return <div>
-		<h3>Array Editor</h3>
-		<ValuePreview initialValue={[]} canDisable>
-			<ArrayEditor
-				editor={ColorEditor}
-				newItemValue={() => Math.random() > 0.5 ? '#ff00ff' : '#00ffff'}
-			/>
-		</ValuePreview>
 		<h3>Property Editor</h3>
+		<p>
+			<code>PropertyEditor</code> builds a generic key-value form,
+			which is ideal for quickly setting up a &quot;settings&quot; page.
+		</p>
 		<ValuePreview initialValue={{}} canDisable>
 			<PropertyEditor properties={properties} complaints={complaints} />
 		</ValuePreview>
