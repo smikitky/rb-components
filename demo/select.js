@@ -6,11 +6,14 @@ import ValuePreview from './value-preview';
 
 const options = ['Apple', 'Banana', 'Grape', 'Lemon', 'Melon', 'Orange'];
 
-const CustomRenderer = props => (
-	<span style={{border: '1px solid silver', padding: '1px 3px'}}>
-		{props.caption}
-	</span>
-);
+const CustomRenderer = props => {
+	const { renderAs, caption } = props;
+	const color = renderAs === 'select' ? 'pink' : 'yellow';
+	const style = {border: `1px solid ${color}`, padding: '1px 3px'};
+	return <span style={style}>
+		{caption}
+	</span>;
+};
 
 export const ShrinkSelectDemo = () => {
 	return <div>
