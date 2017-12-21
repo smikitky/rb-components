@@ -10,19 +10,21 @@ import { AppContainer } from 'react-hot-loader';
 import DemoApp from './demo-app';
 
 function render(App) {
-	// AppContainer enables react-hot-loader
-	ReactDOM.render(
-		<AppContainer><App /></AppContainer>,
-		document.getElementById('main')
-	);
+  // AppContainer enables react-hot-loader
+  ReactDOM.render(
+    <AppContainer>
+      <App />
+    </AppContainer>,
+    document.getElementById('main')
+  );
 }
 
 render(DemoApp);
 
 // Hot Module Replacement API
 if (module.hot) {
-	module.hot.accept('./demo-app', () => {
-		const NextApp = require('./demo-app').default;
-		render(NextApp);
-	});
+  module.hot.accept('./demo-app', () => {
+    const NextApp = require('./demo-app').default;
+    render(NextApp);
+  });
 }

@@ -8,6 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint lib demo",
     "lint-fix": "eslint --fix lib demo",
+    "prettier": "prettier lib/**/*.{js,less} demo/**/*.js --write",
     "precommit": "npm run lint"
   },
   "keywords": [
@@ -31,6 +32,7 @@
     "husky": "^0.14.3",
     "less": "^2.7.3",
     "less-loader": "^4.0.5",
+    "prettier": "^1.9.2",
     "react": "^16.2.0",
     "react-bootstrap": "^0.31.5",
     "react-dom": "^16.2.0",
@@ -46,5 +48,8 @@
     "prop-types": "^15.6.0",
     "tinycolor2": "^1.4.1",
     "uncontrollable": "^4.1.0"
+  },
+  "prettier": {
+    "singleQuote": true
   }
 }

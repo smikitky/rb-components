@@ -16,8 +16,8 @@ globals:
 plugins:
   - react
 rules:
+  indent: [2, 2, { SwitchCase: 1 }]
   quotes: [2, 'single', { avoidEscape: true }]
-  jsx-quotes: [2, 'prefer-single']
   "react/prop-types": [0]
   "react/display-name": [0]
   "react/jsx-closing-bracket-location": [2, 'line-aligned']

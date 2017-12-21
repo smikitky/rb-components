@@ -6,36 +6,40 @@ import RelativeDatePicker from '../lib/RelativeDatePicker';
 import DateRangePicker from '../lib/DateRangePicker';
 import ValuePreview from './value-preview';
 
-const DropdownDatePickerDemo = props => <div>
-	<h4>Default</h4>
-	<DropdownDatePicker {...props} />
-	<h4>Blocked</h4>
-	<DropdownDatePicker {...props} block bsSize='xs' bsStyle='primary' />
-</div>;
+const DropdownDatePickerDemo = props => (
+  <div>
+    <h4>Default</h4>
+    <DropdownDatePicker {...props} />
+    <h4>Blocked</h4>
+    <DropdownDatePicker {...props} block bsSize="xs" bsStyle="primary" />
+  </div>
+);
 
 const CalendarDemo = () => {
-	return <div>
-		<h3>Clickable Calendar</h3>
-		<ValuePreview initialValue='2017-01-01' canDisable>
-			<Calendar />
-		</ValuePreview>
-		<h3>Dropdown Date Picker</h3>
-		<ValuePreview initialValue='2017-01-01' canDisable>
-			<DropdownDatePickerDemo />
-		</ValuePreview>
-		<h3>Relative Date Picker</h3>
-		<ValuePreview initialValue={null} canDisable>
-			<RelativeDatePicker />
-		</ValuePreview>
-		<h3>Date Range Picker</h3>
-		<ValuePreview initialValue={{ from: null, to: null }} canDisable>
-			<DateRangePicker />
-		</ValuePreview>
-		<h3>Custom Date Format</h3>
-		<ValuePreview initialValue={'31 Aug 1980'}>
-			<DropdownDatePicker format='DD MMM YYYY' />
-		</ValuePreview>
-	</div>;
+  return (
+    <div>
+      <h3>Clickable Calendar</h3>
+      <ValuePreview initialValue="2017-01-01" canDisable>
+        <Calendar />
+      </ValuePreview>
+      <h3>Dropdown Date Picker</h3>
+      <ValuePreview initialValue="2017-01-01" canDisable>
+        <DropdownDatePickerDemo />
+      </ValuePreview>
+      <h3>Relative Date Picker</h3>
+      <ValuePreview initialValue={null} canDisable>
+        <RelativeDatePicker />
+      </ValuePreview>
+      <h3>Date Range Picker</h3>
+      <ValuePreview initialValue={{ from: null, to: null }} canDisable>
+        <DateRangePicker />
+      </ValuePreview>
+      <h3>Custom Date Format</h3>
+      <ValuePreview initialValue={'31 Aug 1980'}>
+        <DropdownDatePicker format="DD MMM YYYY" />
+      </ValuePreview>
+    </div>
+  );
 };
 
 export default CalendarDemo;
