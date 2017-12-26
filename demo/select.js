@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import ShrinkSelect from '../lib/ShrinkSelect';
 import BlockSelect from '../lib/BlockSelect';
 import MultiSelect from '../lib/MultiSelect';
 import ValuePreview from './value-preview';
 
 const options = ['Apple', 'Banana', 'Grape', 'Lemon', 'Melon', 'Orange'];
+const numericalOptions = [1, 200, 350, 900];
+
+const CustomNumericRenderer = props => {
+  return <Fragment>{props.caption} miles</Fragment>;
+};
 
 const CustomRenderer = props => {
   const { renderAs, caption } = props;
@@ -39,6 +44,14 @@ export const ShrinkSelectDemo = () => {
       <h3>With Custom Renderer</h3>
       <ValuePreview initialValue={[]} canDisable>
         <MultiSelect options={options} renderer={CustomRenderer} />
+      </ValuePreview>
+      <h3>With Numerical Value and Custom Renderer</h3>
+      <ValuePreview initialValue={200} canDisable>
+        <ShrinkSelect
+          options={numericalOptions}
+          numericalValue
+          renderer={CustomNumericRenderer}
+        />
       </ValuePreview>
       <h3>MultiSelect Checkbox Array</h3>
       <ValuePreview initialValue={[]} canDisable>
