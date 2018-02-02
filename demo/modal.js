@@ -39,6 +39,12 @@ const onPromptClick = async () => {
   await alert('Your input is: ' + answer);
 };
 
+const onValidatePromptClick = async () => {
+  const validator = str => (str.match(/^[a-fA-F0-9]+$/) ? null : 'Invalid');
+  const answer = await prompt('Input hex number', '012abc', { validator });
+  await alert('Your input is: ' + answer);
+};
+
 const MyCustomDialog = props => {
   return (
     <CustomDialog {...props}>
@@ -90,6 +96,13 @@ export default function ModalDemo() {
         </IconButton>
         <IconButton icon="comment" bsStyle="primary" onClick={onPromptClick}>
           Prompt
+        </IconButton>
+        <IconButton
+          icon="comment"
+          bsStyle="primary"
+          onClick={onValidatePromptClick}
+        >
+          Prompt with validation
         </IconButton>
       </div>
       <h3>Promise Wrapper</h3>
