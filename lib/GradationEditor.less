@@ -1,0 +1,47 @@
+.gradation-editor {
+  position: relative;
+  width: 400px;
+  height: 30px;
+  &.block {
+    width: auto;
+  }
+  padding: 0px 4px 10px;
+  background-color: #ddd;
+}
+
+.gradation-editor-preview {
+  height: 15px;
+  position: relative;
+  border: 1px solid gray;
+}
+
+.gradation-editor-color-stop {
+  position: absolute;
+  &::after {
+    content: '';
+    display: block;
+    position: absolute;
+    background-color: inherit;
+    width: 9px;
+    height: 15px;
+    left: -4px;
+    top: 14px;
+    border: 1px solid black;
+    border-radius: 3px 3px 0 0;
+    &:hover {
+      border-color: gray;
+    }
+    cursor: ew-resize;
+    z-index: 2;
+  }
+}
+
+.gradation-editor-add-area {
+  position: absolute;
+  bottom: 0;
+  height: 15px;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  cursor: crosshair;
+}
