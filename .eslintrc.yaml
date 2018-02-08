@@ -16,7 +16,7 @@ globals:
 plugins:
   - react
 rules:
-  indent: [2, 2, { SwitchCase: 1 }]
+  # indent: [2, 2, { SwitchCase: 1, flatTernaryExpressions: true }]
   quotes: [2, 'single', { avoidEscape: true }]
   "react/prop-types": [0]
   "react/display-name": [0]
