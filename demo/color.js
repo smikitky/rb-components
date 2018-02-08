@@ -42,9 +42,17 @@ const ColorDemo = () => {
       <ValuePreview initialValue={'#ff0000'} canDisable>
         <ColorPickers />
       </ValuePreview>
+      <h4>With Alpha</h4>
+      <ValuePreview initialValue={'#ff0000ff'} canDisable>
+        <ColorPicker withAlpha showColorCode />
+      </ValuePreview>
       <h3>Static Color Palette</h3>
       <ValuePreview initialValue={'#ff0000'} canDisable>
         <ColorPalette />
+      </ValuePreview>
+      <h4>With Alpha</h4>
+      <ValuePreview initialValue={'#ff0000ff'} canDisable>
+        <ColorPalette withAlpha />
       </ValuePreview>
       <h3>Gradation Editor</h3>
       <ValuePreview initialValue={gradationInitialValue} canDisable>

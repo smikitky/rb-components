@@ -11,39 +11,45 @@
   border: 1px solid gray;
 }
 
-.color-picker-palette {
-  padding-left: 1px;
-  padding-top: 1px;
-  width: 14px * 8 + 2px;
-  display: flex;
-  flex-flow: row wrap;
-  .color-picker-palette-color {
-    display: block;
-    width: 15px;
-    height: 15px;
-    margin-left: -1px;
-    margin-top: -1px;
-    border: 1px solid white;
-    &:hover {
-      z-index: 1;
-      border: 1px solid gray;
-    }
-    &.selected {
-      z-index: 2;
-      border: 1px solid black;
-    }
-    &:focus {
-      z-index: 3;
-    }
-  }
-  &.disabled {
+.color-picker-container {
+  .color-picker-palette {
+    padding-left: 1px;
+    padding-top: 1px;
+    width: 14px * 8 + 2px;
+    display: flex;
+    flex-flow: row wrap;
     .color-picker-palette-color {
+      display: block;
+      width: 15px;
+      height: 15px;
+      margin-left: -1px;
+      margin-top: -1px;
+      border: 1px solid white;
       &:hover {
-        border-color: white;
-      }
-      &.selected {
+        z-index: 1;
         border: 1px solid gray;
       }
+      &.selected {
+        z-index: 2;
+        border: 1px solid black;
+      }
+      &:focus {
+        z-index: 3;
+      }
     }
+    &.disabled {
+      .color-picker-palette-color {
+        &:hover {
+          border-color: white;
+        }
+        &.selected {
+          border: 1px solid gray;
+        }
+      }
+    }
+  }
+
+  .color-picker-alpha-slider {
+    width: 110px;
   }
 }
