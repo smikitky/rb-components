@@ -28,11 +28,12 @@
     top: 14px;
     border: 1px solid black;
     border-radius: 3px 3px 0 0;
-    &:hover {
-      border-color: gray;
-    }
     cursor: ew-resize;
     z-index: 2;
+  }
+  &.disabled::after {
+    border-color: gray;
+    cursor: not-allowed;
   }
 }
 
@@ -44,4 +45,7 @@
   right: 0;
   z-index: 1;
   cursor: crosshair;
+  &.disabled {
+    cursor: not-allowed;
+  }
 }
