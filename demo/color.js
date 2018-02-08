@@ -21,6 +21,14 @@ const ColorPickers = props => (
   </div>
 );
 
+const GradationEditors = props => (
+  <div>
+    <GradationEditor {...props} />
+    <hr />
+    <GradationEditor block {...props} />
+  </div>
+);
+
 const gradationInitialValue = [
   { position: 0, color: '#ff0000', alpha: 1 },
   { position: 50, color: '#00ff00', alpha: 0.5 },
@@ -40,7 +48,7 @@ const ColorDemo = () => {
       </ValuePreview>
       <h3>Gradation Editor</h3>
       <ValuePreview initialValue={gradationInitialValue} canDisable>
-        <GradationEditor />
+        <GradationEditors />
       </ValuePreview>
     </div>
   );
