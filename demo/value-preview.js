@@ -1,4 +1,9 @@
-import React, { cloneElement } from 'react';
+import React, { cloneElement, Fragment } from 'react';
+
+const DefaultPreviewer = props => {
+  const { value } = props;
+  return <Fragment>{JSON.stringify(value)}</Fragment>;
+};
 
 /**
  * Displays the specified component with its value
@@ -25,7 +30,8 @@ export default class ValuePreview extends React.PureComponent {
       valueProp = 'value',
       event = 'onChange',
       canDisable = false,
-      children
+      children,
+      previewer: Previewer = DefaultPreviewer
     } = this.props;
     const child = cloneElement(children, {
       [valueProp]: this.state.value,
@@ -43,7 +49,9 @@ export default class ValuePreview extends React.PureComponent {
           </div>
         )}
         {child}
-        <div className="value">{JSON.stringify(this.state.value)}</div>
+        <div className="value">
+          <Previewer value={this.state.value} />
+        </div>
       </div>
     );
   }
