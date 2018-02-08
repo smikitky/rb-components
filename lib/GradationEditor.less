@@ -16,6 +16,10 @@
 
 .gradation-editor-color-stop {
   position: absolute;
+}
+
+.gradation-editor-color-stop-handle {
+  position: absolute;
   &::after {
     content: '';
     display: block;
@@ -29,13 +33,13 @@
     border-radius: 3px 3px 0 0;
     cursor: ew-resize;
     z-index: 2;
-  }
-  &.disabled::after {
-    border-color: gray;
-    cursor: not-allowed;
-  }
-  &.dimmed::after {
-    opacity: 0.3;
+    .gradation-editor-color-stop.disabled & {
+      border-color: gray;
+      cursor: not-allowed;
+    }
+    .gradation-editor-color-stop.dimmed & {
+      opacity: 0.3;
+    }
   }
 }
 
