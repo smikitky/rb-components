@@ -31,8 +31,8 @@ const GradationEditors = props => (
 
 const gradationInitialValue = [
   { position: 0, color: '#ff0000', alpha: 1 },
-  { position: 50, color: '#00ff00', alpha: 0.5 },
-  { position: 100, color: '#0000ff', alpha: 1 }
+  { position: 0.5, color: '#00ff00', alpha: 0.5 },
+  { position: 1, color: '#0000ff', alpha: 1 }
 ];
 
 const ColorDemo = () => {
