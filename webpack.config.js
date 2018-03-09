@@ -19,11 +19,7 @@ module.exports = {
           loader: 'babel-loader',
           options: {
             presets: ['react'],
-            plugins: [
-              'transform-es2015-classes',
-              'transform-object-rest-spread',
-              'react-hot-loader/babel'
-            ]
+            plugins: ['transform-object-rest-spread', 'react-hot-loader/babel']
           }
         }
       }
