@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
+  mode: 'development',
   entry: {
     demo: ['react-hot-loader/patch', path.join(__dirname, 'demo', 'demo.js')]
   },
