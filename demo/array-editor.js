@@ -51,8 +51,8 @@ const ArrayEditorDemo = () => {
       <p>
         <code>ArrayEditor</code> wraps an &quot;editor&quot; and renders an
         editable list of it. An &quot;editor&quot; is any component that takes{' '}
-        <code>value</code>,
-        <code>onChange(newValue)</code> and <code>disabled</code>.
+        <code>value</code>,<code>onChange(newValue)</code> and{' '}
+        <code>disabled</code>.
       </p>
       <ValuePreview initialValue={['#ff0000']} canDisable>
         <ColorArrayEditors />

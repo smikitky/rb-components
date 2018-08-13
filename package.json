@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint lib demo",
     "lint-fix": "eslint --fix lib demo",
-    "prettier": "prettier lib/**/*.{js,less} demo/**/*.js --write",
+    "prettier": "prettier lib/**/*.js demo/**/*.js --write",
     "precommit": "npm run lint"
   },
   "keywords": [
