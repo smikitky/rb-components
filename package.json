@@ -2,7 +2,6 @@
   "name": "@smikitky/rb-components",
   "version": "2.7.0",
   "description": "Components for React-Bootstrap",
-  "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server",
     "test": "echo \"Error: no test specified\" && exit 1",
