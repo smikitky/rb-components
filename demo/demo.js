@@ -1,7 +1,6 @@
 'use strict';
 
 require('file-loader?name=index.html!./index.html');
-require('style-loader!css-loader!less-loader!../lib/rb-components.less');
 
 import React from 'react';
 import ReactDOM from 'react-dom';
