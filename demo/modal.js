@@ -54,9 +54,7 @@ const MyCustomDialog = createDialog(props => (
 ));
 
 const onCustomClick = async () => {
-  modal(props => (
-    <MyCustomDialog message="World" bsSize="small" backdrop {...props} />
-  ));
+  modal(props => <MyCustomDialog message="World" bsSize="small" {...props} />);
 };
 
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
