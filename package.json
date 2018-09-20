@@ -18,32 +18,32 @@
   "repository": "smikitky/rb-components",
   "license": "MIT",
   "devDependencies": {
-    "babel-core": "^6.26.3",
-    "babel-loader": "^7.1.5",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-react": "^6.24.1",
+    "@babel/core": "^7.1.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.2",
     "bootstrap": "^3.3.7",
-    "eslint": "^5.3.0",
-    "eslint-plugin-react": "^7.10.0",
-    "file-loader": "^1.1.11",
+    "eslint": "^5.6.0",
+    "eslint-plugin-react": "^7.11.1",
+    "file-loader": "^2.0.0",
     "husky": "^0.14.3",
-    "prettier": "^1.14.2",
-    "react": "^16.4.2",
-    "react-bootstrap": "^0.32.1",
-    "react-dom": "^16.4.2",
-    "react-hot-loader": "^4.3.4",
-    "webpack": "^4.16.5",
+    "prettier": "^1.14.3",
+    "react": "^16.5.2",
+    "react-bootstrap": "^0.32.4",
+    "react-dom": "^16.5.2",
+    "react-hot-loader": "^4.3.10",
+    "webpack": "^4.19.1",
     "webpack-cli": "^3.1.0",
-    "webpack-dev-server": "^3.1.5"
+    "webpack-dev-server": "^3.1.8"
   },
   "dependencies": {
     "classnames": "^2.2.6",
     "keycode": "^2.2.0",
     "moment": "^2.22.2",
     "prop-types": "^15.6.2",
-    "styled-components": "^3.4.2",
+    "styled-components": "^3.4.9",
     "tinycolor2": "^1.4.1",
-    "uncontrollable": "^4.1.0"
+    "uncontrollable": "^6.0.0"
   },
   "prettier": {
     "singleQuote": true
