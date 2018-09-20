@@ -2,11 +2,10 @@ extends:
   - eslint:recommended
   - plugin:react/recommended
 parserOptions:
-  ecmaVersion: 2017
+  ecmaVersion: 2018
   sourceType: module
   ecmaFeatures:
     jsx: true
-    experimentalObjectRestSpread: true
 env:
   browser: true
   es6: true
@@ -16,11 +15,11 @@ globals:
 plugins:
   - react
 rules:
-  # indent: [2, 2, { SwitchCase: 1, flatTernaryExpressions: true }]
   quotes: [2, 'single', { avoidEscape: true }]
-  "react/prop-types": [0]
-  "react/display-name": [0]
-  "react/jsx-closing-bracket-location": [2, 'line-aligned']
+  'react/prop-types': [0]
+  'react/display-name': [0]
+  'react/jsx-closing-bracket-location': [2, 'line-aligned']
   no-useless-escape: [0]
   semi: [2, 'always']
   prefer-const: [2]
+  no-unused-vars: [0]

@@ -22,6 +22,7 @@ module.exports = {
     ]
   },
   plugins: [new webpack.HotModuleReplacementPlugin()],
+  devtool: 'inline-source-map',
   devServer: {
     host: process.env.IP || 'localhost',
     disableHostCheck: true,

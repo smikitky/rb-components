@@ -9,8 +9,7 @@ import {
   modal,
   withProgressDialog
 } from '../lib/modal';
-import CustomDialog from '../lib/CustomDialog';
-import Modal from 'react-bootstrap/lib/Modal';
+import createDialog from '../lib/createDialog';
 
 const onAlertClick = async () => {
   await alert('Alert!');
@@ -45,21 +44,19 @@ const onValidatePromptClick = async () => {
   await alert('Your input is: ' + answer);
 };
 
-const MyCustomDialog = props => {
-  return (
-    <CustomDialog {...props}>
-      <h2>Hello, {props.message}</h2>
-      <Modal.Body>
-        <IconButton icon="star" onClick={props.onResolve} bsStyle="primary">
-          OK
-        </IconButton>
-      </Modal.Body>
-    </CustomDialog>
-  );
-};
+const MyCustomDialog = createDialog(props => (
+  <div>
+    <h2>Hello, {props.message}</h2>
+    <IconButton icon="star" onClick={() => props.onResolve()} bsStyle="primary">
+      OK
+    </IconButton>
+  </div>
+));
 
 const onCustomClick = async () => {
-  modal(MyCustomDialog, { message: 'World', bsSize: 'small', backdrop: true });
+  modal(props => (
+    <MyCustomDialog message="World" bsSize="small" backdrop {...props} />
+  ));
 };
 
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
