@@ -7,10 +7,10 @@ import {
   choice,
   prompt,
   modal,
-  withProgressDialog,
-  createDialog
+  withProgressDialog
 } from '../lib/modal';
 import Modal from 'react-bootstrap/lib/Modal';
+import { rejects } from 'assert';
 
 const onAlertClick = async () => {
   await alert('Alert!');
@@ -31,13 +31,13 @@ const onChoiceClick = async () => {
     'No, I will reconsider it': { response: 'no', style: 'default' }
   };
   const answer = await choice('Select your decision', choices, {
-    cancelable: true
+    cancelable: false
   });
   await alert('You selected: ' + answer);
 };
 
 const onPromptClick = async () => {
-  const answer = await prompt('Input something');
+  const answer = await prompt('Input something', '', { bsSize: 'small' });
   await alert('Your input is: ' + answer);
 };
 
@@ -47,23 +47,58 @@ const onValidatePromptClick = async () => {
   await alert('Your input is: ' + answer);
 };
 
-const MyCustomDialog = createDialog(props => (
+const MyCustomDialog = props => (
   <Modal.Body>
     <h3>Hello, {props.message}</h3>
-    <IconButton icon="star" onClick={() => props.onResolve()} bsStyle="primary">
-      OK
-    </IconButton>
+    <div className="btn-group">
+      <IconButton
+        icon="star"
+        onClick={() => props.onResolve(10)}
+        bsStyle="primary"
+      >
+        OK
+      </IconButton>
+      <IconButton
+        icon="exclamation-sign"
+        onClick={() => props.onReject(20)}
+        bsStyle="warning"
+      >
+        Reject
+      </IconButton>
+    </div>
   </Modal.Body>
-));
+);
 
 const onCustomClick = async () => {
-  modal(props => <MyCustomDialog message="World" bsSize="small" {...props} />);
+  try {
+    const result = await modal(
+      props => <MyCustomDialog message="World" {...props} />,
+      { keyboard: false, bsSize: 'small' }
+    );
+    alert('Resolved with ' + result);
+  } catch (err) {
+    alert('Rejected with ' + err);
+  }
 };
 
-const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+const fortune = ms =>
+  new Promise((resolve, reject) =>
+    setTimeout(() => {
+      if (Math.random() > 0.5) resolve('Lucky!');
+      else reject('Bad!');
+    }, ms)
+  );
 
 const onProgressClick = async () => {
-  withProgressDialog('Waiting for 2 seconds...', delay(2000));
+  try {
+    const result = await withProgressDialog(
+      'Waiting for 2 seconds...',
+      fortune(2000)
+    );
+    await alert('Resolved with ' + result);
+  } catch (err) {
+    await alert('Rejected with ' + err);
+  }
 };
 
 export default function ModalDemo() {
