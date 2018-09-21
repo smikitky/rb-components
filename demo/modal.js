@@ -7,9 +7,9 @@ import {
   choice,
   prompt,
   modal,
-  withProgressDialog
+  withProgressDialog,
+  createDialog
 } from '../lib/modal';
-import createDialog from '../lib/createDialog';
 
 const onAlertClick = async () => {
   await alert('Alert!');
@@ -29,7 +29,9 @@ const onChoiceClick = async () => {
     'Yes, I will delete it': { response: 'yes', style: 'danger' },
     'No, I will reconsider it': { response: 'no', style: 'default' }
   };
-  const answer = await choice('Select your decision', choices);
+  const answer = await choice('Select your decision', choices, {
+    cancelable: true
+  });
   await alert('You selected: ' + answer);
 };
 
