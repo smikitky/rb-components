@@ -10,6 +10,7 @@ import ColorDemo from './color';
 import ConditionEditorDemo from './condition-editor';
 import ArrayEditorDemo from './array-editor';
 import PropertyEditorDemo from './property-editor';
+import JsonSchemaEditorDemo from './json-schema-editor';
 import MiscDemo from './misc';
 import SliderDemo from './slider';
 
@@ -42,6 +43,9 @@ const DemoApp = () => (
       </Tab>
       <Tab eventKey={'property'} title="PropertyEditor">
         <PropertyEditorDemo />
+      </Tab>
+      <Tab eventKey={'json-schema-editor'} title="JsonSchemaEditor">
+        <JsonSchemaEditorDemo />
       </Tab>
       <Tab eventKey={'slider'} title="Slider">
         <SliderDemo />
