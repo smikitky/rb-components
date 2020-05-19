@@ -48,7 +48,7 @@
     "moment": "^2.22.2",
     "prop-types": "^15.6.2",
     "tinycolor2": "^1.4.1",
-    "uncontrollable": "^6.0.0"
+    "uncontrollable": "^7.1.1"
   },
   "prettier": {
     "singleQuote": true
