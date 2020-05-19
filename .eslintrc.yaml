@@ -1,6 +1,7 @@
 extends:
   - eslint:recommended
   - plugin:react/recommended
+  - plugin:react-hooks/recommended
 parserOptions:
   ecmaVersion: 2018
   sourceType: module
@@ -14,12 +15,13 @@ globals:
   React: true
 plugins:
   - react
+  - react-hooks
+settings:
+  react:
+    version: detect
 rules:
-  quotes: [2, 'single', { avoidEscape: true }]
   'react/prop-types': [0]
   'react/display-name': [0]
-  'react/jsx-closing-bracket-location': [2, 'line-aligned']
   no-useless-escape: [0]
-  semi: [2, 'always']
-  prefer-const: [2]
+  prefer-const: ['error']
   no-unused-vars: [0]
