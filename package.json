@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint lib demo",
     "lint-fix": "eslint --fix lib demo",
-    "prettier": "prettier lib/**/*.js demo/**/*.js --write",
+    "prettier": "prettier lib demo --write",
     "precommit": "npm run lint"
   },
   "keywords": [
@@ -27,7 +27,7 @@
     "eslint-plugin-react": "^7.11.1",
     "file-loader": "^2.0.0",
     "husky": "^0.14.3",
-    "prettier": "^1.14.3",
+    "prettier": "^2.0.5",
     "react": "^16.8.4",
     "react-bootstrap": "^0.33.1",
     "react-dom": "^16.8.4",
@@ -51,6 +51,8 @@
     "uncontrollable": "^7.1.1"
   },
   "prettier": {
-    "singleQuote": true
+    "singleQuote": true,
+    "arrowParens": "avoid",
+    "trailingComma": "none"
   }
 }
