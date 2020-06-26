@@ -9,21 +9,19 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.(js|tsx?)$/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['@babel/preset-react'],
-            plugins: [
-              '@babel/plugin-proposal-object-rest-spread',
-              'react-hot-loader/babel'
-            ]
+            presets: ['@babel/preset-react', '@babel/preset-typescript'],
+            plugins: ['react-hot-loader/babel']
           }
         }
       }
     ]
   },
+  resolve: { extensions: ['.ts', '.tsx', '.js', '.json'] },
   plugins: [new webpack.HotModuleReplacementPlugin()],
   devtool: 'inline-source-map',
   devServer: {
