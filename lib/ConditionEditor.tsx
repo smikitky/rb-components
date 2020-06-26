@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import ShrinkSelect from './ShrinkSelect';
 import FormControl from 'react-bootstrap/lib/FormControl';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
@@ -10,8 +9,9 @@ import DropdownDatePicker from './DropdownDatePicker';
 import moment from 'moment';
 import normalizeOptions from './utils/normalizeOptions';
 import styled from 'styled-components';
+import { Sizes } from 'react-bootstrap';
 
-const escapeRegExp = str => {
+const escapeRegExp = (str: string) => {
   str = str + '';
   return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
 };
@@ -43,44 +43,88 @@ const StyledDiv = styled.div`
   }
 `;
 
-export default function ConditionEditor(props) {
-  const { keys, value, onChange, bsSize = undefined, disabled } = props;
+export interface Keys {
+  [key: string]: any;
+}
+
+export type Operator =
+  | '=='
+  | '!='
+  | '>'
+  | '<'
+  | '>='
+  | '<='
+  | '^='
+  | '$='
+  | '*=';
+
+export interface SingleNode {
+  keyName: string;
+  op: Operator;
+  value: any;
+}
+
+export type GroupNode = { $and: Node[] } | { $or: Node[] };
+
+export type Node = GroupNode | SingleNode;
+
+export type Condition = GroupNode;
+
+const ConditionEditor: React.FC<{
+  keys: Keys;
+  value: Condition;
+  onChange: (value: Condition) => void;
+  bsSize?: Sizes;
+  disabled?: boolean;
+}> = props => {
+  const {
+    keys,
+    value = { $and: [] },
+    onChange,
+    bsSize = undefined,
+    disabled
+  } = props;
 
   return (
     <StyledDiv className="condition-editor">
       <ConditionNode
         keys={keys}
+        value={value}
         depth={0}
+        index={0}
+        siblingCount={1}
         onChange={onChange}
         onRemove={noop}
-        value={value}
         bsSize={bsSize}
         disabled={disabled}
       />
     </StyledDiv>
   );
-}
+};
 
-const ConditionNode = props => {
+export default ConditionEditor;
+
+type NodeEditor<T> = React.FC<{
+  keys: Keys;
+  value: T;
+  onChange: (node: T) => void;
+  onRemove: (index: number) => void;
+  depth: number;
+  index: number;
+  siblingCount: number;
+  bsSize?: Sizes;
+  disabled?: boolean;
+}>;
+
+const ConditionNode: NodeEditor<Node> = props => {
   const node = props.value;
   if (typeof node === 'object') {
-    const isGroupNode = node.$and || node.$or;
+    const isGroupNode = '$and' in node || '$or' in node;
     const NodeComp = isGroupNode ? GroupedCondition : SingleCondition;
-    let additionalProps;
-
-    if (isGroupNode) {
-      const groupType = node.$and ? '$and' : '$or';
-      additionalProps = {
-        groupType,
-        members: node[groupType]
-      };
-    } else {
-      const { keyName, op, value } = node;
-      additionalProps = { keyName, op, value };
-    }
     return (
       <NodeComp
         keys={props.keys}
+        value={props.value as any}
         index={props.index}
         onChange={props.onChange}
         onRemove={props.onRemove}
@@ -88,58 +132,65 @@ const ConditionNode = props => {
         bsSize={props.bsSize}
         siblingCount={props.siblingCount}
         disabled={props.disabled}
-        {...additionalProps}
       />
     );
   }
   return <div>Error: Type error at depth {props.depth}</div>;
 };
 
-const GroupedCondition = props => {
-  function memberChange(index, newObj) {
-    const newMembers = props.members.slice();
+const GroupedCondition: NodeEditor<GroupNode> = props => {
+  const members: Node[] =
+    '$and' in props.value ? props.value.$and : props.value.$or;
+  const groupType = '$and' in props.value ? '$and' : '$or';
+
+  const handleMemberChange = (index: number, newObj: Node) => {
+    const newMembers = members.slice();
     newMembers[index] = newObj;
-    props.onChange({ [props.groupType]: newMembers });
-  }
+    props.onChange({ [groupType]: newMembers } as GroupNode);
+  };
 
-  function typeChange(type) {
-    props.onChange({ [type]: props.members });
-  }
+  const handleTypeChange = (type: '$and' | '$or') => {
+    props.onChange({ [type]: members } as GroupNode);
+  };
 
-  function deleteMember(index) {
-    const newMembers = props.members.slice();
+  const handleDeleteMember = (index: number) => {
+    const newMembers = members.slice();
     newMembers.splice(index, 1);
     if (newMembers.length) {
-      props.onChange({ [props.groupType]: newMembers });
+      props.onChange({ [groupType]: newMembers } as GroupNode);
     } else {
       props.onRemove(props.index);
     }
-  }
+  };
 
-  function addMemberClick() {
-    const newMember = {
+  const handleAddMember = () => {
+    const newMember: SingleNode = {
       keyName: Object.keys(props.keys)[0],
       op: '==',
       value: ''
     };
-    props.onChange({ [props.groupType]: [...props.members, newMember] });
-  }
+    props.onChange({
+      [groupType]: [...members, newMember]
+    } as GroupNode);
+  };
 
-  function addGroupClick() {
-    const newCondition = {
+  const handleAddGroup = () => {
+    const newCondition: SingleNode = {
       keyName: Object.keys(props.keys)[0],
       op: '==',
       value: ''
     };
-    const newMember = { $or: [newCondition] };
-    props.onChange({ [props.groupType]: [...props.members, newMember] });
-  }
+    const newMember: GroupNode = { $or: [newCondition] };
+    props.onChange({
+      [groupType]: [...members, newMember]
+    } as GroupNode);
+  };
 
   return (
     <div className="condition-group-node">
       <AndOr
-        value={props.groupType}
-        onChange={type => typeChange(type)}
+        value={groupType}
+        onChange={type => handleTypeChange(type)}
         bsSize={props.bsSize}
         disabled={props.disabled}
       />
@@ -151,30 +202,30 @@ const GroupedCondition = props => {
         />
       ) : null}
       <div className="condition-group-members">
-        {props.members.map((member, i) => (
+        {members.map((member, i) => (
           <ConditionNode
-            keys={props.keys}
-            index={i}
-            depth={props.depth + 1}
-            siblingCount={props.members.length}
-            onChange={val => memberChange(i, val)}
-            onRemove={deleteMember}
-            bsSize={props.bsSize}
             key={i}
+            keys={props.keys}
             value={member}
+            onChange={val => handleMemberChange(i, val)}
+            onRemove={handleDeleteMember}
+            depth={props.depth + 1}
+            index={i}
+            siblingCount={members.length}
+            bsSize={props.bsSize}
             disabled={props.disabled}
           />
         ))}
         <ToolButton
           bsSize={props.bsSize}
           icon="plus"
-          onClick={addMemberClick}
+          onClick={handleAddMember}
           disabled={props.disabled}
         />
         <ToolButton
           bsSize={props.bsSize}
           icon="folder-open"
-          onClick={addGroupClick}
+          onClick={handleAddGroup}
           disabled={props.disabled}
         />
       </div>
@@ -182,7 +233,19 @@ const GroupedCondition = props => {
   );
 };
 
-const typeMap = {
+const typeMap: {
+  [type: string]: {
+    operators: { [op: string]: string };
+    control: React.ComponentType<{
+      spec: any;
+      value: any;
+      onChange: (value: any) => void;
+      bsSize?: Sizes;
+      disabled?: boolean;
+    }>;
+    convert?: (input: any, spec: any) => any;
+  };
+} = {
   number: {
     operators: {
       '==': '=',
@@ -191,13 +254,13 @@ const typeMap = {
       '>=': '>=',
       '<=': '<='
     },
-    control: function NumberForm(props) {
+    control: props => {
       return (
         <FormControl
           type="number"
           bsSize={props.bsSize}
           value={props.value}
-          onChange={ev => props.onChange(parseFloat(ev.target.value))}
+          onChange={ev => props.onChange(parseFloat((ev as any).target.value))}
           disabled={props.disabled}
         />
       );
@@ -212,13 +275,13 @@ const typeMap = {
       '$=': 'ends with',
       '*=': 'contains'
     },
-    control: function TextForm(props) {
+    control: props => {
       return (
         <FormControl
           type="text"
           bsSize={props.bsSize}
           value={props.value}
-          onChange={ev => props.onChange(ev.target.value)}
+          onChange={ev => props.onChange((ev as any).target.value)}
           disabled={props.disabled}
         />
       );
@@ -230,7 +293,7 @@ const typeMap = {
       '==': 'is',
       '!=': 'is not'
     },
-    control: function SelectForm(props) {
+    control: props => {
       return (
         <BlockSelect
           bsSize={props.bsSize}
@@ -255,7 +318,7 @@ const typeMap = {
       '>=': '>=',
       '<=': '<='
     },
-    control: function DateForm(props) {
+    control: props => {
       return (
         <DropdownDatePicker
           bsSize={props.bsSize}
@@ -274,34 +337,36 @@ const typeMap = {
   }
 };
 
-const SingleCondition = props => {
-  if (!(props.keyName in props.keys)) {
-    return <div>Error: Unknown key {props.keyName}</div>;
+const SingleCondition: NodeEditor<SingleNode> = props => {
+  const { keyName, op, value } = props.value;
+
+  if (!(keyName in props.keys)) {
+    return <div>Error: Unknown key {keyName}</div>;
   }
 
-  const valueType = props.keys[props.keyName].type;
-  const valueSpec = props.keys[props.keyName].spec;
+  const valueType = props.keys[keyName].type;
+  const valueSpec = props.keys[keyName].spec;
   const operators = typeMap[valueType].operators;
   const Control = typeMap[valueType].control;
 
-  function keyChange(newKeyName) {
+  const handleKeyChange = (newKeyName: string) => {
     const newKey = props.keys[newKeyName];
-    let newOp = props.op;
-    if (props.keys[props.keyName].type !== newKey.type) newOp = '==';
-    let newValue = props.value;
+    let newOp = op;
+    if (props.keys[keyName].type !== newKey.type) newOp = '==';
+    let newValue = value;
     if (typeMap[newKey.type].convert) {
       newValue = typeMap[newKey.type].convert(newValue, newKey.spec);
     }
     props.onChange({ keyName: newKeyName, op: newOp, value: newValue });
-  }
+  };
 
-  function opChange(newOp) {
-    props.onChange({ keyName: props.keyName, op: newOp, value: props.value });
-  }
+  const handleOpChange = (newOp: Operator) => {
+    props.onChange({ keyName, op: newOp, value });
+  };
 
-  function valueChange(newValue) {
-    props.onChange({ keyName: props.keyName, op: props.op, value: newValue });
-  }
+  const handleValueChange = (newValue: any) => {
+    props.onChange({ keyName, op, value: newValue });
+  };
 
   const keyOptions = {};
   Object.keys(props.keys).forEach(k => {
@@ -312,25 +377,25 @@ const SingleCondition = props => {
     <div className="condition-single-node">
       <ShrinkSelect
         options={keyOptions}
-        value={props.keyName}
+        value={keyName}
         bsSize={props.bsSize}
         className="key-dropdown"
-        onChange={id => keyChange(id)}
+        onChange={id => handleKeyChange(id as string)}
         disabled={props.disabled}
       />
       <ShrinkSelect
         options={operators}
-        value={props.op}
+        value={op}
         bsSize={props.bsSize}
         className="op-dropdown"
-        onChange={op => opChange(op)}
+        onChange={op => handleOpChange(op as Operator)}
         disabled={props.disabled}
       />
       <FormGroup>
         <Control
-          value={props.value}
+          value={value}
           bsSize={props.bsSize}
-          onChange={valueChange}
+          onChange={handleValueChange}
           spec={valueSpec}
           disabled={props.disabled}
         />
@@ -360,7 +425,12 @@ const AndOr = props => {
   );
 };
 
-const ToolButton = props => {
+const ToolButton: React.FC<{
+  icon: string;
+  onClick: () => void;
+  bsSize?: Sizes;
+  disabled?: boolean;
+}> = props => {
   return (
     <Button
       bsSize={props.bsSize}
@@ -375,11 +445,12 @@ const ToolButton = props => {
 
 /**
  * Converts ConditionEditor's output to API filter.
- * @param {object} condition
- * @param {string[]} dateFields
  */
-export const conditionToMongoQuery = (condition, dateFields = []) => {
-  const binary2obj = (key, op, value) => {
+export const conditionToMongoQuery = (
+  condition: Node,
+  dateFields: string[] = []
+) => {
+  const binary2obj = (key: string, op: Operator, value: any) => {
     if (dateFields.indexOf(key) >= 0) value = { $date: value };
     switch (op) {
       case '==':
@@ -403,11 +474,11 @@ export const conditionToMongoQuery = (condition, dateFields = []) => {
     }
   };
 
-  if (Array.isArray(condition.$and)) {
+  if ('$and' in condition) {
     return {
       $and: condition.$and.map(m => conditionToMongoQuery(m, dateFields))
     };
-  } else if (Array.isArray(condition.$or)) {
+  } else if ('$or' in condition) {
     return {
       $or: condition.$or.map(m => conditionToMongoQuery(m, dateFields))
     };
@@ -415,28 +486,3 @@ export const conditionToMongoQuery = (condition, dateFields = []) => {
     return binary2obj(condition.keyName, condition.op, condition.value);
   }
 };
-
-const isSingleNode = PropTypes.shape({
-  keyName: PropTypes.string.isRequired,
-  op: PropTypes.string.isRequired,
-  value: PropTypes.any.isRequired
-}).isRequired;
-
-// lazy reference of isNode to define the recursive prop type
-const _isNode = function () {
-  return isNode.apply(this, arguments);
-};
-
-const isGroupNode = PropTypes.oneOfType([
-  PropTypes.shape({ $and: PropTypes.arrayOf(_isNode).isRequired }),
-  PropTypes.shape({ $or: PropTypes.arrayOf(_isNode).isRequired })
-]).isRequired;
-
-const isNode = PropTypes.oneOfType([isSingleNode, isGroupNode]).isRequired;
-
-ConditionEditor.propTypes = {
-  value: isGroupNode,
-  onChange: PropTypes.func
-};
-
-ConditionEditor.defaultProps = { value: { $and: [] } };
