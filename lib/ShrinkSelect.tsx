@@ -2,10 +2,12 @@ import React, { Fragment } from 'react';
 import Dropdown from 'react-bootstrap/lib/Dropdown';
 import MenuItem from 'react-bootstrap/lib/MenuItem';
 import classnames from 'classnames';
-import normalizeOptions from './utils/normalizeOptions';
+import normalizeOptions, { Options } from './utils/normalizeOptions';
 import styled from 'styled-components';
 
-const DefaultRenderer = props => <Fragment>{props.caption}</Fragment>;
+const DefaultRenderer: React.FC<{ caption: any }> = props => (
+  <Fragment>{props.caption}</Fragment>
+);
 
 const StyledDropdown = styled(Dropdown)`
   &.dropdown-block {
@@ -25,7 +27,21 @@ const StyledDropdown = styled(Dropdown)`
   }
 `;
 
-export default function ShrinkSelect(props) {
+export interface ShrinkSelectProps {
+  options: Options;
+  value: string | number;
+  defaultSelect?: string | number;
+  onChange?: (value: string | number) => void;
+  bsSize?: string;
+  bsStyle?: string;
+  block?: boolean;
+  disabled?: boolean;
+  className?: string;
+  renderer?: React.ComponentType<any>;
+  numericalValue?: boolean;
+}
+
+const ShrinkSelect: React.FC<ShrinkSelectProps> = props => {
   const {
     defaultSelect = null,
     onChange = () => {},
@@ -49,7 +65,7 @@ export default function ShrinkSelect(props) {
       ' '
     );
 
-  const handleChange = key => {
+  const handleChange = (key: string) => {
     if (typeof onChange === 'function') {
       onChange(numericalValue ? parseFloat(key) : key);
     }
@@ -65,6 +81,9 @@ export default function ShrinkSelect(props) {
       )}
       disabled={disabled}
     >
+      {/* 'block' is not in DropdownToggleProps, but it was hard to augment
+          due to https://github.com/Microsoft/TypeScript/issues/14080
+       // @ts-ignore */}
       <Dropdown.Toggle bsStyle={bsStyle} bsSize={bsSize} block={block}>
         {title}
       </Dropdown.Toggle>
@@ -77,4 +96,6 @@ export default function ShrinkSelect(props) {
       </Dropdown.Menu>
     </StyledDropdown>
   );
-}
+};
+
+export default ShrinkSelect;

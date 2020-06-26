@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import Dropdown from 'react-bootstrap/lib/Dropdown';
-import normalizeOptions from './utils/normalizeOptions';
+import normalizeOptions, { Options } from './utils/normalizeOptions';
 import classnames from 'classnames';
 import styled from 'styled-components';
 
@@ -45,7 +45,7 @@ const MultiSelectDropdown = props => {
     disabled
   } = props;
 
-  let caption = [];
+  let caption: any = [];
   if (value.length === 0) {
     caption = noneText;
   } else if (value.length > showSelectedMax) {
@@ -118,7 +118,19 @@ const checkBoxArray = props => {
 /**
  * Dropdown + Multiselect component.
  */
-const MultiSelect = props => {
+const MultiSelect: React.FC<{
+  renderer: React.ComponentType<any>;
+  showSelectedMax?: number;
+  options: Options;
+  value: any[];
+  type?: 'dropdown' | 'checkbox';
+  glue?: string;
+  noneText?: string;
+  onChange?: (value: any[]) => void;
+  numericalValue?: boolean;
+  className?: string;
+  disabled?: boolean;
+}> = props => {
   const {
     renderer = DefaultRenderer,
     showSelectedMax = 3,

@@ -1,4 +1,14 @@
-export default function normalizeOptions(options) {
+export interface NormalizedOption {
+  caption: string;
+}
+
+export type Options =
+  | string[]
+  | { [key: string]: string | { caption: string } };
+
+export type NormalizedOptions = { [key: string]: NormalizedOption };
+
+const normalizeOptions = (options: Options): NormalizedOptions => {
   const result = {};
   if (Array.isArray(options)) {
     options.forEach(opt => (result[opt] = { caption: opt }));
@@ -12,4 +22,6 @@ export default function normalizeOptions(options) {
     });
   }
   return result;
-}
+};
+
+export default normalizeOptions;
