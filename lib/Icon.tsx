@@ -1,6 +1,5 @@
 import React from 'react';
 import classnames from 'classnames';
-import PropTypes from 'prop-types';
 import styled, { keyframes } from 'styled-components';
 
 const spin = keyframes`
