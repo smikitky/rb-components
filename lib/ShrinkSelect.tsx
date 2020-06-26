@@ -81,10 +81,14 @@ const ShrinkSelect: React.FC<ShrinkSelectProps> = props => {
       )}
       disabled={disabled}
     >
-      {/* 'block' is not in DropdownToggleProps, but it was hard to augment
-          due to https://github.com/Microsoft/TypeScript/issues/14080
-       // @ts-ignore */}
-      <Dropdown.Toggle bsStyle={bsStyle} bsSize={bsSize} block={block}>
+      <Dropdown.Toggle
+        bsStyle={bsStyle}
+        bsSize={bsSize}
+        /* 'block' is not in DropdownToggleProps, but it was hard to augment
+           due to https://github.com/Microsoft/TypeScript/issues/14080
+        // @ts-ignore */
+        block={block}
+      >
         {title}
       </Dropdown.Toggle>
       <Dropdown.Menu>

@@ -1,5 +1,4 @@
 import React, { useState, useRef } from 'react';
-import PropTypes from 'prop-types';
 import Dropdown from 'react-bootstrap/lib/Dropdown';
 import tinycolor from 'tinycolor2';
 import keycode from 'keycode';
@@ -46,11 +45,25 @@ const StyledDropdown = styled(Dropdown)`
 
 const noop = () => {};
 
-const ColorPicker = props => {
+const ColorPicker: React.FC<{
+  value: string;
+  withAlpha?: boolean;
+  colors?: string[];
+  showColorCode?: boolean;
+  bsSize?: string;
+  noCaret?: boolean;
+  onChange?: (value: string) => void;
+  onToggle?: () => void;
+  bsStyle?: string;
+  block?: boolean;
+  boxPreview?: boolean;
+  className?: string;
+  disabled?: boolean;
+}> = props => {
   const {
     value,
     withAlpha,
-    colors,
+    colors = defaultColors,
     showColorCode,
     bsSize = undefined,
     noCaret = false,
@@ -89,6 +102,8 @@ const ColorPicker = props => {
         style={boxPreview ? {} : style}
         bsSize={bsSize}
         bsStyle={bsStyle}
+        /*
+        // @ts-ignore */
         block={block}
         noCaret={noCaret}
       >
@@ -114,23 +129,11 @@ const ColorPicker = props => {
             value={value}
             withAlpha={withAlpha}
             onChange={onChange}
-            itemTabIndex={-1}
           />
         </li>
       </Dropdown.Menu>
     </StyledDropdown>
   );
-};
-
-ColorPicker.defaultProps = {
-  colors: defaultColors
-};
-
-ColorPicker.propTypes = {
-  colors: PropTypes.arrayOf(PropTypes.string),
-  value: PropTypes.string,
-  withAlpha: PropTypes.bool,
-  onChange: PropTypes.func
 };
 
 export default ColorPicker;
@@ -178,21 +181,31 @@ const StyledDiv = styled.div`
   }
 `;
 
-export const ColorPalette = props => {
+export const ColorPalette: React.FC<{
+  colors?: string[];
+  value: string;
+  onChange?: (value: string) => void;
+  disabled?: boolean;
+  withAlpha?: boolean;
+  itemsPerRow?: number;
+  className?: string;
+}> = props => {
   const {
-    colors,
+    colors = defaultColors,
     value,
     onChange = () => {},
     disabled,
     withAlpha,
-    itemsPerRow,
+    itemsPerRow = 8,
     className
   } = props;
   const [hasFocus, setHasFocus] = useState(false);
-  const paletteRef = useRef();
+  const paletteRef = useRef<HTMLDivElement>();
 
   const focusRelative = (ev, delta) => {
-    const children = Array.from(paletteRef.current.children);
+    const children = Array.from(
+      paletteRef.current.children
+    ) as HTMLDivElement[];
 
     let curIndex;
     if (children.some(el => el === document.activeElement)) {
@@ -253,7 +266,9 @@ export const ColorPalette = props => {
   const handleFocus = ev => {
     if (ev.target !== paletteRef.current) return;
     const index = colors.indexOf(value);
-    const children = Array.from(paletteRef.current.children);
+    const children = Array.from(
+      paletteRef.current.children
+    ) as HTMLDivElement[];
     if (index >= 0) {
       children[index].focus();
     } else if (children.length) {
@@ -310,16 +325,4 @@ export const ColorPalette = props => {
       )}
     </StyledDiv>
   );
-};
-
-ColorPalette.defaultProps = {
-  colors: defaultColors,
-  itemsPerRow: 8
-};
-
-ColorPalette.propTypes = {
-  colors: PropTypes.arrayOf(PropTypes.string),
-  value: PropTypes.string,
-  itemsPerRow: PropTypes.number,
-  onChange: PropTypes.func
 };
