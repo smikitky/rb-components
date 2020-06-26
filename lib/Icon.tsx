@@ -23,8 +23,11 @@ const StyledI = styled.i`
  * It works similarly to react-bootstrap's <Glypihicon>, but provides
  * a common way to render icons from various icon libraries.
  */
-export function createIconComponent(prefixes) {
-  const result = function Icon(props) {
+export const createIconComponent = (prefixes: { [key: string]: string }) => {
+  const Icon: React.FC<{
+    icon: string;
+    spin?: boolean;
+  }> = function Icon(props) {
     const { icon, spin = false } = props;
     const makeIcon = fqn => <StyledI className={classnames({ spin }, fqn)} />;
 
@@ -35,12 +38,8 @@ export function createIconComponent(prefixes) {
     }
     return makeIcon(prefixes.default + icon);
   };
-  result.propTypes = {
-    icon: PropTypes.string.isRequired,
-    spin: PropTypes.bool
-  };
-  return result;
-}
+  return Icon;
+};
 
 /**
  * Default Icon component, which recognizes Glyphicon and Font Awesome icon classes.
