@@ -1,8 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import IconButton from './IconButton';
 import styled from 'styled-components';
+import { Editor } from './editor-types';
 
 const StyledUl = styled.ul`
   list-style-type: none;
@@ -24,15 +24,27 @@ const StyledUl = styled.ul`
   }
 `;
 
+interface Props<T> {
+  value: T[];
+  onChange: (value: T[]) => any;
+  disabled?: boolean;
+  inline?: boolean;
+  newItemValue: T | ((value: T[]) => T);
+  editor: Editor<T>;
+  className?: string;
+}
+
 /**
  * Renders an editor for generic items.
  * The 'editor' is a React component that accepts 'value' and 'onChange'.
  */
-const ArrayEditor = React.memo(props => {
+const ArrayEditor: <T extends any>(
+  props: Props<T>
+) => React.ReactElement<Props<T>> = props => {
   const {
-    value,
-    inline,
-    newItemValue,
+    value = [],
+    inline = false,
+    newItemValue = null,
     editor: Editor,
     className,
     onChange = () => {},
@@ -91,18 +103,6 @@ const ArrayEditor = React.memo(props => {
       </li>
     </StyledUl>
   );
-});
-
-export default ArrayEditor;
-
-ArrayEditor.defaultProps = {
-  value: [],
-  newItemValue: null
 };
 
-ArrayEditor.propTypes = {
-  newItemValue: PropTypes.any,
-  value: PropTypes.arrayOf(PropTypes.any),
-  inline: PropTypes.bool,
-  editor: PropTypes.func.isRequired
-};
+export default React.memo(ArrayEditor);

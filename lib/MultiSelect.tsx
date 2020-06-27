@@ -119,17 +119,17 @@ const checkBoxArray = props => {
  * Dropdown + Multiselect component.
  */
 const MultiSelect: React.FC<{
-  renderer: React.ComponentType<any>;
+  value: any[];
+  onChange?: (value: any[]) => void;
+  disabled?: boolean;
+  renderer?: React.ComponentType<any>;
   showSelectedMax?: number;
   options: Options;
-  value: any[];
   type?: 'dropdown' | 'checkbox';
   glue?: string;
   noneText?: string;
-  onChange?: (value: any[]) => void;
   numericalValue?: boolean;
   className?: string;
-  disabled?: boolean;
 }> = props => {
   const {
     renderer = DefaultRenderer,
