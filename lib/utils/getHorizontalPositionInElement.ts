@@ -1,4 +1,7 @@
-const getHorizontalPositionInElement = (parent, clientX) => {
+const getHorizontalPositionInElement = (
+  parent: HTMLDivElement,
+  clientX: number
+) => {
   const {
     left: parentLeft,
     width: parentWidth
