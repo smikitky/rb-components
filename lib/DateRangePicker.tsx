@@ -1,7 +1,12 @@
 import React from 'react';
 import DropdownButton from 'react-bootstrap/lib/DropdownButton';
 import MenuItem from 'react-bootstrap/lib/MenuItem';
-import RelativeDatePicker, { normalizeRelative } from './RelativeDatePicker';
+import RelativeDatePicker, {
+  normalizeRelative,
+  RelativeDate
+} from './RelativeDatePicker';
+import { Sizes } from 'react-bootstrap';
+import { defaultDateFormat } from './Calendar';
 
 const presets = {
   today: { caption: 'Today' },
@@ -14,33 +19,50 @@ const presets = {
   all: { caption: 'All', from: null, to: null }
 };
 
-const DateRangePicker = props => {
-  const { from = null, to = null } = props.value || {};
-  const { format, bsSize, disabled } = props;
+export interface DateRange {
+  from: RelativeDate;
+  to: RelativeDate;
+}
 
-  function fromChange(date) {
+const DateRangePicker: React.FC<{
+  value: DateRange;
+  onChange: (value: DateRange) => void;
+  id: string;
+  format: string;
+  bsSize?: Sizes;
+  disabled?: boolean;
+}> = props => {
+  const {
+    value: { from = null, to = null } = {},
+    onChange,
+    format = defaultDateFormat,
+    bsSize,
+    disabled
+  } = props;
+
+  const fromChange = (date: RelativeDate) => {
     const newValue = { from: date, to };
-    props.onChange(newValue);
-  }
+    onChange(newValue);
+  };
 
-  function toChange(date) {
+  const toChange = (date: RelativeDate) => {
     const newValue = { from, to: date };
-    props.onChange(newValue);
-  }
+    onChange(newValue);
+  };
 
-  function presetSelect(key) {
+  const presetSelect = (key: string) => {
     const newValue = {
       from: 'from' in presets[key] ? presets[key].from : [0, 'day'],
       to: 'to' in presets[key] ? presets[key].to : [0, 'day']
     };
-    props.onChange(newValue);
-  }
+    onChange(newValue);
+  };
 
   return (
     <div className="daterange-picker">
       <div className="form-inline">
         <RelativeDatePicker
-          id={props.id + '-from'}
+          // id={props.id + '-from'}
           value={from}
           format={format}
           onChange={fromChange}
@@ -49,7 +71,7 @@ const DateRangePicker = props => {
         />
         &thinsp;&mdash;&thinsp;
         <RelativeDatePicker
-          id={props.id + '-to'}
+          // id={props.id + '-to'}
           value={to}
           format={format}
           onChange={toChange}
@@ -57,7 +79,7 @@ const DateRangePicker = props => {
           disabled={disabled}
         />
         <DropdownButton
-          onSelect={presetSelect}
+          onSelect={(key: any) => presetSelect(key as string)}
           bsStyle="link"
           bsSize={bsSize}
           title=""
@@ -77,7 +99,10 @@ const DateRangePicker = props => {
 
 export default DateRangePicker;
 
-export const dateRangeToMongoQuery = (condition, key) => {
+export const dateRangeToMongoQuery = (
+  condition: DateRange,
+  key: string
+): { $and: any[] } | null => {
   const result = { $and: [] };
   const from = normalizeRelative(condition.from);
   if (from) result.$and.push({ [key]: { $gte: { $date: from } } });

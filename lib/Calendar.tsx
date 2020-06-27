@@ -4,7 +4,6 @@ import Button from 'react-bootstrap/lib/Button';
 import moment from 'moment';
 import classnames from 'classnames';
 import keycode from 'keycode';
-import PropTypes from 'prop-types';
 import { uncontrollable } from 'uncontrollable';
 import styled from 'styled-components';
 
@@ -46,11 +45,23 @@ const StyledDiv = styled.div`
   }
 `;
 
-const ControlledCalendar = props => {
+export interface YearMonth {
+  year: number;
+  month: number;
+}
+
+const ControlledCalendar: React.FC<{
+  value: any;
+  onChange: any;
+  format?: string;
+  disabled?: boolean;
+  yearMonth: YearMonth;
+  onYearMonthChange: (yearMonth: YearMonth) => void;
+}> = props => {
   const {
     value,
     onChange,
-    format,
+    format = defaultDateFormat,
     disabled,
     yearMonth,
     onYearMonthChange
@@ -84,6 +95,7 @@ const ControlledCalendar = props => {
 
   useEffect(() => {
     const handleWheel = ev => {
+      if (disabled) return;
       ev.preventDefault();
       if (ev.deltaY > 0) nextMonth();
       if (ev.deltaY < 0) prevMonth();
@@ -93,7 +105,7 @@ const ControlledCalendar = props => {
     return () => {
       div.removeEventListener('wheel', handleWheel);
     };
-  }, [year, month, nextMonth, prevMonth]);
+  }, [year, month, disabled, nextMonth, prevMonth]);
 
   return (
     <StyledDiv
@@ -126,18 +138,6 @@ const ControlledCalendar = props => {
   );
 };
 
-ControlledCalendar.propTypes = {
-  yearMonth: PropTypes.shape({
-    year: PropTypes.number.isRequired,
-    month: PropTypes.number.isRequired
-  }),
-  value: PropTypes.string,
-  disabled: PropTypes.bool,
-  format: PropTypes.string,
-  onYearMonthChange: PropTypes.func,
-  onChange: PropTypes.func
-};
-
 // uncontrollable makes this component 'optionally-controllable'.
 export const Calendar = uncontrollable(ControlledCalendar, {
   yearMonth: 'onYearMonthChange'
@@ -160,7 +160,13 @@ const split = (array, every) => {
   return result;
 };
 
-const CalendarTable = memo(props => {
+const CalendarTable: React.FC<{
+  value: string;
+  onChange?: (value: string) => void;
+  disabled?: boolean;
+  yearMonth: YearMonth;
+  format: string;
+}> = React.memo(props => {
   const [hasFocus, setHasFocus] = useState(false);
   const {
     yearMonth: { year, month },
@@ -170,7 +176,7 @@ const CalendarTable = memo(props => {
     format = defaultDateFormat
   } = props;
 
-  const tbodyRef = useRef();
+  const tbodyRef = useRef<HTMLTableSectionElement>();
   const tableRef = useRef();
 
   const handleDateSelect = useCallback(
@@ -188,7 +194,7 @@ const CalendarTable = memo(props => {
     const children = Array.from(tbodyRef.current.querySelectorAll('td'));
     const fromDate = moment.unix(ev.target.dataset.date);
     const toDate = fromDate.add(delta, 'day').unix();
-    const nextNode = children.find(el => el.dataset.date == toDate);
+    const nextNode = children.find(el => el.dataset.date === String(toDate));
     if (nextNode) {
       nextNode.focus();
       ev.preventDefault();
@@ -202,7 +208,9 @@ const CalendarTable = memo(props => {
       if (ev.target === tableRef.current) {
         const valueMoment =
           value !== undefined ? moment(value, format).unix() : undefined;
-        const selected = children.find(el => el.dataset.date == valueMoment);
+        const selected = children.find(
+          el => el.dataset.date === String(valueMoment)
+        );
         if (selected) selected.focus();
         else tbodyRef.current.querySelector('td').focus();
       }
@@ -311,7 +319,3 @@ const CalendarTable = memo(props => {
     </table>
   );
 });
-
-CalendarTable.defaultProps = {
-  format: defaultDateFormat
-};

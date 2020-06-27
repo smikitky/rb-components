@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import Dropdown from 'react-bootstrap/lib/Dropdown';
-import Calendar from './Calendar';
+import Calendar, { defaultDateFormat } from './Calendar';
 import moment from 'moment';
 import classnames from 'classnames';
 import styled from 'styled-components';
+import { Sizes } from 'react-bootstrap';
 
 const StyledDropdown = styled(Dropdown)`
   .dropdown-date-picker-menu {
@@ -11,7 +12,15 @@ const StyledDropdown = styled(Dropdown)`
   }
 `;
 
-const DropdownDatePicker = props => {
+const DropdownDatePicker: React.FC<{
+  value: string;
+  onChange: (value: string) => void;
+  disabled?: boolean;
+  format?: string;
+  bsSize?: Sizes;
+  bsStyle?: string;
+  block?: boolean;
+}> = props => {
   const [yearMonth, setYearMonth] = useState(null);
 
   const {
@@ -20,7 +29,7 @@ const DropdownDatePicker = props => {
     bsSize = undefined,
     bsStyle = 'default',
     block = false,
-    format,
+    format = defaultDateFormat,
     onChange = () => {}
   } = props;
 
@@ -41,7 +50,12 @@ const DropdownDatePicker = props => {
       onToggle={handleToggle}
       disabled={disabled}
     >
-      <Dropdown.Toggle bsSize={bsSize} bsStyle={bsStyle} block={block}>
+      <Dropdown.Toggle
+        bsSize={bsSize}
+        bsStyle={bsStyle}
+        // @ts-ignore
+        block={block}
+      >
         {value}
       </Dropdown.Toggle>
       <Dropdown.Menu className="dropdown-date-picker-menu">
