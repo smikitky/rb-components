@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ValuePreview from './value-preview';
 import JsonSchemaEditor from '../lib/JsonSchemaEditor';
 
@@ -14,10 +14,13 @@ const schema = {
 
 const schema2 = {
   ...schema,
-  requiredProperties: ['age', 'hex', 'job', 'chk']
+  required: ['age', 'hex', 'job', 'chk']
 };
 
 const JsonSchemaEditorDemo = () => {
+  const [valid1, setValid1] = useState('?');
+  const [valid2, setValid2] = useState('?');
+
   return (
     <div>
       <h3>JSON Schema Editor</h3>
@@ -40,12 +43,20 @@ const JsonSchemaEditorDemo = () => {
 
       <h3>Optional Values</h3>
       <ValuePreview initialValue={{}} canDisable>
-        <JsonSchemaEditor schema={schema} />
+        <JsonSchemaEditor
+          schema={schema}
+          onValidate={valid => setValid1(valid)}
+        />
       </ValuePreview>
+      <div className="value">{JSON.stringify({ valid: valid1 })}</div>
       <h3>Requried Values</h3>
       <ValuePreview initialValue={{}} canDisable>
-        <JsonSchemaEditor schema={schema2} />
+        <JsonSchemaEditor
+          schema={schema2}
+          onValidate={valid => setValid2(valid)}
+        />
       </ValuePreview>
+      <div className="value">{JSON.stringify({ valid: valid2 })}</div>
     </div>
   );
 };
