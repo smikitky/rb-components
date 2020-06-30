@@ -7,9 +7,33 @@ import Popover from 'react-bootstrap/lib/Popover';
 import { ColorPalette } from './ColorPicker';
 import styled from 'styled-components';
 
-const toHex = color => tinycolor(color).toHex8String();
+interface ColorStop {
+  position: number;
+  color: string;
+}
 
-class Handle extends React.Component {
+type Gradation = ColorStop[];
+
+const toHex = (color: string) => tinycolor(color).toHex8String();
+
+class Handle extends React.Component<
+  {
+    stopId: number;
+    value: ColorStop;
+    onUpdate: (stopId: number, updates: Partial<ColorStop>) => void;
+    onRemove: (stopId: number) => void;
+    disabled?: boolean;
+    numStops: number;
+  },
+  {
+    dragging: boolean;
+    dragged: boolean;
+    open: boolean;
+    dimmed: boolean;
+  }
+> {
+  private elem: React.RefObject<HTMLDivElement>;
+
   constructor(props) {
     super(props);
     this.handleMouseDown = this.handleMouseDown.bind(this);
@@ -23,6 +47,7 @@ class Handle extends React.Component {
       open: false,
       dimmed: false
     };
+    this.elem = React.createRef();
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -39,7 +64,7 @@ class Handle extends React.Component {
     if (disabled) return;
     if (!this.state.dragging) return;
     this.setState({ dragged: true, open: false });
-    const preview = this.elem.parentNode.parentNode;
+    const preview = this.elem.current.parentNode.parentNode as HTMLDivElement;
     const pos = getHorizontalPositionInElement(preview, ev.clientX);
     const box = preview.getBoundingClientRect();
     const dimmed =
@@ -103,14 +128,14 @@ class Handle extends React.Component {
       >
         <div
           className="gradation-editor-color-stop-handle"
-          ref={el => (this.elem = el)}
+          ref={this.elem}
           onMouseDown={this.handleMouseDown}
           onClick={this.handleClick}
           style={{ backgroundColor: toHex(value.color) }}
         />
         <Overlay
           show={open}
-          target={this.elem}
+          target={this.elem.current}
           placement="top"
           animation={false}
         >
@@ -190,7 +215,18 @@ const StyledDiv = styled.div`
   }
 `;
 
-export default class GradationEditor extends React.Component {
+export default class GradationEditor extends React.Component<{
+  value: Gradation;
+  onChange: (value: Gradation) => void;
+  disabled?: boolean;
+  maxStops?: number;
+  className?: string;
+  block?: boolean;
+}> {
+  private counter: number;
+  private map: Map<ColorStop, number>;
+  private preview: React.RefObject<HTMLDivElement>;
+
   constructor(props) {
     super(props);
     this.handleColorStopUpdate = this.handleColorStopUpdate.bind(this);
@@ -198,6 +234,7 @@ export default class GradationEditor extends React.Component {
     this.handleColorStopRemove = this.handleColorStopRemove.bind(this);
     this.counter = 1;
     this.map = new Map();
+    this.preview = React.createRef();
   }
 
   handleColorStopUpdate(stopId, updates) {
@@ -234,7 +271,10 @@ export default class GradationEditor extends React.Component {
     if (disabled) return;
     if (typeof maxStops === 'number' && value.length >= maxStops) return;
     const newValue = value.slice();
-    const position = getHorizontalPositionInElement(this.preview, ev.clientX);
+    const position = getHorizontalPositionInElement(
+      this.preview.current,
+      ev.clientX
+    );
     newValue.push({ position, color: '#ffffffff' });
     newValue.sort((a, b) => a.position - b.position);
     onChange(newValue);
@@ -256,7 +296,7 @@ export default class GradationEditor extends React.Component {
         })}
       >
         <div
-          ref={el => (this.preview = el)}
+          ref={this.preview}
           className="gradation-editor-preview"
           style={{ background: gradient }}
         >
@@ -290,11 +330,11 @@ export default class GradationEditor extends React.Component {
 
 /**
  * Calculates the interpolated color of the given position.
- * @param {Array} gradation The gradation definition.
- * @param {number} position The position from 0 to 1
- * @returns {string} The 8-digit hex color string like `#ffffffff`.
+ * @param gradation The gradation definition.
+ * @param position The position from 0 to 1
+ * @returns The 8-digit hex color string like `#ffffffff`.
  */
-export const gradationColorAt = (gradation, position) => {
+export const gradationColorAt = (gradation: Gradation, position: number) => {
   if (!Array.isArray(gradation) || gradation.length == 0) {
     throw new TypeError('Invalid gradation object.');
   }
@@ -316,11 +356,11 @@ export const gradationColorAt = (gradation, position) => {
 
 /**
  * Builds a list of interpolated colors as a typed array.
- * @param {Array} gradation The gradation definition.
- * @param {number} steps The length of the resulting array.
- * @returns {Uint32Array}
+ * @param gradation The gradation definition.
+ * @param steps The length of the resulting array.
+ * @returns The built array.
  */
-export const buildGradationSteps = (gradation, steps = 256) => {
+export const buildGradationSteps = (gradation: Gradation, steps = 256) => {
   const result = new Uint32Array(steps);
   for (let i = 0; i < steps; i++) {
     const color = gradationColorAt(gradation, i / (steps - 1));
