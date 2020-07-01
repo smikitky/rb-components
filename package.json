@@ -55,7 +55,6 @@
     "classnames": "^2.2.6",
     "keycode": "^2.2.0",
     "moment": "^2.22.2",
-    "prop-types": "^15.6.2",
     "tinycolor2": "^1.4.1",
     "uncontrollable": "^7.1.1"
   },
