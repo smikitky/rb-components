@@ -66,11 +66,15 @@ const ValidatingTextProp: React.FC<{
     return typeof val === 'undefined' ? !required : validator(val);
   };
 
-  useEffect(() => {
-    const valid = isValid(value);
-    setValid(valid);
-    onValidate(valid);
-  }, []); // only on first render
+  useEffect(
+    () => {
+      const valid = isValid(value);
+      setValid(valid);
+      onValidate(valid);
+    },
+    // eslint-disable-next-line
+    []
+  ); // only on first render
 
   const handleChange = (ev: any) => {
     setInput(ev.target.value);
@@ -115,7 +119,7 @@ const StringProp: PropEdit<string> = props => {
       }
       return true;
     },
-    [schema]
+    [maxLength, minLength, pattern]
   );
   return (
     <ValidatingTextProp
@@ -147,7 +151,7 @@ const NumberProp: PropEdit<number> = props => {
         return false;
       return true;
     },
-    [schema]
+    [exclusiveMaximum, exclusiveMinimum, isInt, maximum, minimum]
   );
 
   const handleChange = useCallback(
@@ -175,13 +179,17 @@ const EnumProp: PropEdit<any> = props => {
   const { enum: options } = schema;
   const [input, setInput] = useState<string | number | undefined>(value);
 
-  useEffect(() => {
-    if (value === undefined) {
-      onValidate(!required);
-    } else {
-      onValidate(options.indexOf(value) >= 0);
-    }
-  }, []); // only on first render
+  useEffect(
+    () => {
+      if (value === undefined) {
+        onValidate(!required);
+      } else {
+        onValidate(options.indexOf(value) >= 0);
+      }
+    },
+    // eslint-disable-next-line
+    []
+  ); // only on first render
 
   const handleChange = (ev: React.ChangeEvent<HTMLSelectElement>) => {
     const index = ev.target.selectedIndex;
@@ -228,9 +236,13 @@ const BooleanProp: PropEdit<boolean> = props => {
   const valid =
     typeof value === 'boolean' || (!required && typeof value === 'undefined');
 
-  useEffect(() => {
-    onValidate(valid);
-  }, []);
+  useEffect(
+    () => {
+      onValidate(valid);
+    },
+    // eslint-disable-next-line
+    []
+  );
 
   return (
     <div className={classnames('radios', { invalid: !valid })}>

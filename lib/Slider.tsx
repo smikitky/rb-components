@@ -34,7 +34,7 @@ const SliderThumb: React.FC<{
       document.removeEventListener('mousemove', handleDocumentMouseMove);
       document.removeEventListener('mouseup', handleDocumentMouseUp);
     };
-  }, [dragging]);
+  }, [dragging, onMove]);
 
   const handleMouseDown = () => {
     setDragging(true);

@@ -5,8 +5,8 @@
   "scripts": {
     "start": "webpack-dev-server",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint lib demo",
-    "lint-fix": "eslint --fix lib demo",
+    "lint": "eslint lib/**/*.{js,ts,tsx} demo",
+    "lint-fix": "eslint --fix lib/**/*.{js,ts,tsx} demo",
     "prettier": "prettier lib demo --write",
     "precommit": "npm run lint"
   },
@@ -26,6 +26,8 @@
     "@types/react-bootstrap": "^0.32.21",
     "@types/styled-components": "^5.1.0",
     "@types/tinycolor2": "^1.4.2",
+    "@typescript-eslint/eslint-plugin": "^3.5.0",
+    "@typescript-eslint/parser": "^3.5.0",
     "babel-loader": "^8.0.2",
     "bootstrap": "^3.3.7",
     "eslint": "^6.8.0",
@@ -39,6 +41,7 @@
     "react-dom": "^16.8.4",
     "react-hot-loader": "^4.8.0",
     "styled-components": "^5.1.1",
+    "typescript": "^3.9.5",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.2.3",
     "webpack-dev-server": "^3.2.1"

@@ -412,7 +412,7 @@ const ProgressDialog: React.FC<{
 
   useEffect(() => {
     task.then(onResolve).catch(onReject);
-  }, []);
+  }, [onReject, onResolve, task]);
 
   return (
     <div>
