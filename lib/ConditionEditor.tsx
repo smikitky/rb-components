@@ -44,7 +44,11 @@ const StyledDiv = styled.div`
 `;
 
 export interface Keys {
-  [key: string]: any;
+  [key: string]: {
+    type: KeyType;
+    caption: string;
+    spec: any;
+  };
 }
 
 export type Operator =
@@ -104,7 +108,7 @@ const ConditionEditor: React.FC<{
 
 export default ConditionEditor;
 
-type NodeEditor<T> = React.FC<{
+interface NodeEditorProps<T> {
   keys: Keys;
   value: T;
   onChange: (node: T) => void;
@@ -114,17 +118,23 @@ type NodeEditor<T> = React.FC<{
   siblingCount: number;
   bsSize?: Sizes;
   disabled?: boolean;
-}>;
+}
 
-const ConditionNode: NodeEditor<Node> = props => {
+type NodeEditor<T extends Node> = React.FC<NodeEditorProps<T>>;
+
+const ConditionNode = <T extends Node>(
+  props: NodeEditorProps<T>
+): React.ReactElement => {
   const node = props.value;
   if (typeof node === 'object') {
     const isGroupNode = '$and' in node || '$or' in node;
-    const NodeComp = isGroupNode ? GroupedCondition : SingleCondition;
+    const NodeComp: NodeEditor<any> = isGroupNode
+      ? GroupedCondition
+      : SingleCondition;
     return (
       <NodeComp
         keys={props.keys}
-        value={props.value as any}
+        value={props.value}
         index={props.index}
         onChange={props.onChange}
         onRemove={props.onRemove}
@@ -190,7 +200,7 @@ const GroupedCondition: NodeEditor<GroupNode> = props => {
     <div className="condition-group-node">
       <AndOr
         value={groupType}
-        onChange={type => handleTypeChange(type)}
+        onChange={handleTypeChange}
         bsSize={props.bsSize}
         disabled={props.disabled}
       />
@@ -233,8 +243,10 @@ const GroupedCondition: NodeEditor<GroupNode> = props => {
   );
 };
 
+type KeyType = 'number' | 'text' | 'select' | 'date';
+
 const typeMap: {
-  [type: string]: {
+  [type in KeyType]: {
     operators: { [op: string]: string };
     control: React.ComponentType<{
       spec: any;
@@ -243,7 +255,7 @@ const typeMap: {
       bsSize?: Sizes;
       disabled?: boolean;
     }>;
-    convert?: (input: any, spec: any) => any;
+    convert: (input: any, spec: any) => any;
   };
 } = {
   number: {
@@ -354,9 +366,7 @@ const SingleCondition: NodeEditor<SingleNode> = props => {
     let newOp = op;
     if (props.keys[keyName].type !== newKey.type) newOp = '==';
     let newValue = value;
-    if (typeMap[newKey.type].convert) {
-      newValue = typeMap[newKey.type].convert(newValue, newKey.spec);
-    }
+    newValue = typeMap[newKey.type].convert(newValue, newKey.spec);
     props.onChange({ keyName: newKeyName, op: newOp, value: newValue });
   };
 
@@ -368,7 +378,7 @@ const SingleCondition: NodeEditor<SingleNode> = props => {
     props.onChange({ keyName, op, value: newValue });
   };
 
-  const keyOptions = {};
+  const keyOptions: { [key: string]: string } = {};
   Object.keys(props.keys).forEach(k => {
     keyOptions[k] = props.keys[k].caption;
   });
@@ -411,15 +421,21 @@ const SingleCondition: NodeEditor<SingleNode> = props => {
   );
 };
 
-const AndOr = props => {
+const AndOr: React.FC<{
+  value: '$and' | '$or';
+  onChange: (value: '$and' | '$or') => void;
+  bsSize?: Sizes;
+  disabled?: boolean;
+}> = props => {
   const options = { $and: 'AND', $or: 'OR' };
+
   return (
     <ShrinkSelect
       options={options}
       bsStyle="primary"
       bsSize={props.bsSize}
       value={props.value}
-      onChange={props.onChange}
+      onChange={props.onChange as (value: string | number) => void}
       disabled={props.disabled}
     />
   );
@@ -449,7 +465,7 @@ const ToolButton: React.FC<{
 export const conditionToMongoQuery = (
   condition: Node,
   dateFields: string[] = []
-) => {
+): object => {
   const binary2obj = (key: string, op: Operator, value: any) => {
     if (dateFields.indexOf(key) >= 0) value = { $date: value };
     switch (op) {
@@ -484,5 +500,7 @@ export const conditionToMongoQuery = (
     };
   } else if ('keyName' in condition) {
     return binary2obj(condition.keyName, condition.op, condition.value);
+  } else {
+    throw new Error('Malformed node');
   }
 };

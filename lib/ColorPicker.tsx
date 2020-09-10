@@ -200,17 +200,17 @@ export const ColorPalette: React.FC<{
     className
   } = props;
   const [hasFocus, setHasFocus] = useState(false);
-  const paletteRef = useRef<HTMLDivElement>();
+  const paletteRef = useRef<HTMLDivElement>(null);
 
-  const focusRelative = (ev, delta) => {
+  const focusRelative = (ev: React.SyntheticEvent, delta: number) => {
     const children = Array.from(
-      paletteRef.current.children
+      paletteRef.current!.children
     ) as HTMLDivElement[];
 
     let curIndex;
     if (children.some(el => el === document.activeElement)) {
       // if fired from an already-focused item...
-      curIndex = children.indexOf(ev.target);
+      curIndex = children.indexOf(ev.target as HTMLDivElement);
     } else {
       curIndex = colors.indexOf(value);
       if (curIndex < 0) curIndex = 0;
@@ -225,8 +225,8 @@ export const ColorPalette: React.FC<{
     }
   };
 
-  const handleKeyDown = ev => {
-    switch (keycode(ev)) {
+  const handleKeyDown = (ev: React.KeyboardEvent) => {
+    switch (keycode(ev.keyCode)) {
       case 'enter':
       case 'space':
         handleSelect(ev);
@@ -247,10 +247,10 @@ export const ColorPalette: React.FC<{
     }
   };
 
-  const handleSelect = ev => {
+  const handleSelect = (ev: React.SyntheticEvent) => {
     if (disabled) return;
-    const children = Array.from(paletteRef.current.children);
-    const index = children.indexOf(ev.target);
+    const children = Array.from(paletteRef.current!.children);
+    const index = children.indexOf(ev.target as HTMLDivElement);
     const rgbColor = colors[index];
     const color = withAlpha
       ? tinycolor(rgbColor).setAlpha(tinycolor(value).getAlpha()).toHex8String()
@@ -258,16 +258,16 @@ export const ColorPalette: React.FC<{
     onChange(color);
   };
 
-  const handleAlphaChange = newAlpha => {
+  const handleAlphaChange = (newAlpha: number) => {
     const color = tinycolor(value).setAlpha(newAlpha).toHex8String();
     onChange(color);
   };
 
-  const handleFocus = ev => {
+  const handleFocus = (ev: React.FocusEvent) => {
     if (ev.target !== paletteRef.current) return;
     const index = colors.indexOf(value);
     const children = Array.from(
-      paletteRef.current.children
+      paletteRef.current!.children
     ) as HTMLDivElement[];
     if (index >= 0) {
       children[index].focus();

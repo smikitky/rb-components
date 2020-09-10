@@ -49,8 +49,8 @@ const StyledDiv = styled.div<{ disabled?: boolean }>`
 `;
 
 const ValidatingTextProp: React.FC<{
-  value: string;
-  onChange: (value: string) => void;
+  value: string | undefined;
+  onChange: (value: string | undefined) => void;
   disabled?: boolean;
   onValidate: (valid: boolean) => void;
   validator: (value: string) => boolean;
@@ -62,7 +62,7 @@ const ValidatingTextProp: React.FC<{
   const [input, setInput] = useState<string>(value || '');
   const [valid, setValid] = useState(false);
 
-  const isValid = (val: string) => {
+  const isValid = (val: string | undefined) => {
     return typeof val === 'undefined' ? !required : validator(val);
   };
 
@@ -76,7 +76,7 @@ const ValidatingTextProp: React.FC<{
     []
   ); // only on first render
 
-  const handleChange = (ev: any) => {
+  const handleChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
     setInput(ev.target.value);
     const val: string | undefined = ev.target.value.length
       ? ev.target.value
@@ -112,8 +112,18 @@ const StringProp: PropEdit<string> = props => {
   const { pattern, minLength, maxLength } = schema;
   const validator = useCallback(
     val => {
-      if (minLength > 0 && val.length < minLength) return false;
-      if (maxLength > 0 && val.length > maxLength) return false;
+      if (
+        typeof minLength === 'number' &&
+        minLength > 0 &&
+        val.length < minLength
+      )
+        return false;
+      if (
+        typeof maxLength === 'number' &&
+        maxLength > 0 &&
+        val.length > maxLength
+      )
+        return false;
       if (typeof pattern === 'string') {
         if (!RegExp(pattern).test(val)) return false;
       }
@@ -178,6 +188,8 @@ const EnumProp: PropEdit<any> = props => {
   const { value, onChange, disabled, onValidate, schema, required } = props;
   const { enum: options } = schema;
   const [input, setInput] = useState<string | number | undefined>(value);
+
+  if (!options?.length) throw new Error('enum not set');
 
   useEffect(
     () => {
@@ -334,12 +346,12 @@ interface SchemaEditorProps<T extends object = any> {
  * Editor for key-value pairs whose shape is determiend by a subset of
  * JSON Schema.
  */
-const JsonSchemaEditor: <T extends {} = any>(
+const JsonSchemaEditor = <T extends {} = any>(
   props: SchemaEditorProps<T>
-) => React.ReactElement<SchemaEditorProps<T>> = props => {
+): React.ReactElement | null => {
   const { value, onChange, disabled, onValidate, schema } = props;
   const [current, setCurrent] = useState({ ...value });
-  const valids = useRef<Map<string, boolean>>(new Map()).current;
+  const valids = useRef<Map<keyof T, boolean>>(new Map()).current;
 
   useEffect(() => {}, [value]);
 
@@ -352,11 +364,11 @@ const JsonSchemaEditor: <T extends {} = any>(
   }
   if (!schema.properties) return null;
 
-  const keys = Object.keys(schema.properties);
+  const keys = Object.keys(schema.properties) as (keyof T)[];
 
   const required = Array.isArray(schema.required) ? schema.required : [];
 
-  const handleChange = (key: string, val: any) => {
+  const handleChange = (key: keyof T, val: any) => {
     const newValue: any = { ...current, [key]: val };
     if (val === undefined) delete newValue[key];
     valids.set(key, true);
@@ -364,7 +376,7 @@ const JsonSchemaEditor: <T extends {} = any>(
     if (keys.every(k => valids.get(k) === true)) onChange(newValue);
   };
 
-  const handleValdate = (key: string, valid: boolean) => {
+  const handleValdate = (key: keyof T, valid: boolean) => {
     valids.set(key, valid);
     if (keys.every(k => valids.has(k))) {
       onValidate(keys.every(k => valids.get(k) === true));
@@ -374,7 +386,7 @@ const JsonSchemaEditor: <T extends {} = any>(
   return (
     <StyledDiv disabled={disabled}>
       {keys.map(k => (
-        <Fragment key={k}>
+        <Fragment key={k as string}>
           <span>{k}</span>
           <Prop
             schema={schema.properties[k]}

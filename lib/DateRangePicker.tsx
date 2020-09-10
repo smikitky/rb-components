@@ -8,7 +8,13 @@ import RelativeDatePicker, {
 import { Sizes } from 'react-bootstrap';
 import { defaultDateFormat } from './Calendar';
 
-const presets = {
+const presets: {
+  [key: string]: {
+    caption: string;
+    from?: RelativeDate;
+    to?: RelativeDate;
+  };
+} = {
   today: { caption: 'Today' },
   yesterday: { caption: 'Yesterday', from: [-1, 'day'], to: [-1, 'day'] },
   last2days: { caption: 'Last 2 days', from: [-1, 'day'] },
@@ -52,8 +58,8 @@ const DateRangePicker: React.FC<{
 
   const presetSelect = (key: string) => {
     const newValue = {
-      from: 'from' in presets[key] ? presets[key].from : [0, 'day'],
-      to: 'to' in presets[key] ? presets[key].to : [0, 'day']
+      from: presets[key].from ?? [0, 'day'],
+      to: presets[key].to ?? [0, 'day']
     };
     onChange(newValue);
   };
@@ -103,7 +109,7 @@ export const dateRangeToMongoQuery = (
   condition: DateRange,
   key: string
 ): { $and: any[] } | null => {
-  const result = { $and: [] };
+  const result: any = { $and: [] };
   const from = normalizeRelative(condition.from);
   if (from) result.$and.push({ [key]: { $gte: { $date: from } } });
   const to = normalizeRelative(condition.to);

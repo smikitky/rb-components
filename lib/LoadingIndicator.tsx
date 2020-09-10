@@ -10,10 +10,10 @@ const StaticLoadingIndicator: React.FC<{
 
 const LoadingIndicator: React.FC<{
   delay?: number;
-  icon: string;
+  icon?: string;
 }> = props => {
-  const { delay, icon } = props;
-  const [show, setShow] = useState(() => !(props.delay > 0));
+  const { delay = 0, icon } = props;
+  const [show, setShow] = useState(() => !(delay > 0));
 
   useEffect(() => {
     if (show) return;
@@ -34,7 +34,7 @@ const LoadingIndicator: React.FC<{
     };
   }, [delay, show]);
 
-  return show && <StaticLoadingIndicator icon={icon} />;
+  return show ? <StaticLoadingIndicator icon={icon} /> : null;
 };
 
 export default LoadingIndicator;

@@ -28,7 +28,9 @@ export const createIconComponent = (prefixes: { [key: string]: string }) => {
     spin?: boolean;
   }> = function Icon(props) {
     const { icon, spin = false } = props;
-    const makeIcon = fqn => <StyledI className={classnames({ spin }, fqn)} />;
+    const makeIcon = (fqn: string) => (
+      <StyledI className={classnames({ spin }, fqn)} />
+    );
 
     for (const k of Object.keys(prefixes)) {
       if (icon.indexOf(k) === 0) {

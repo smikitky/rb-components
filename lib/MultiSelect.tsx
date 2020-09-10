@@ -1,10 +1,18 @@
 import React, { Fragment } from 'react';
 import Dropdown from 'react-bootstrap/lib/Dropdown';
-import normalizeOptions, { Options } from './utils/normalizeOptions';
+import normalizeOptions, {
+  Options,
+  NormalizedOptions
+} from './utils/normalizeOptions';
 import classnames from 'classnames';
 import styled from 'styled-components';
 
-const DefaultRenderer = props => <Fragment>{props.caption}</Fragment>;
+type Renderer = React.ComponentType<{
+  caption: React.ReactChild;
+  renderAs: string;
+}>;
+
+const DefaultRenderer: Renderer = props => <Fragment>{props.caption}</Fragment>;
 
 const StyledDropdown = styled(Dropdown)`
   .multiselect-popover > li {
@@ -32,7 +40,17 @@ const StyledLi = styled.li`
   padding: 3px 10px;
 `;
 
-const MultiSelectDropdown = props => {
+const MultiSelectDropdown: React.FC<{
+  value: any[];
+  onItemChange: (index: number, checked: boolean) => void;
+  disabled?: boolean;
+  renderer: Renderer;
+  showSelectedMax: number;
+  options: NormalizedOptions;
+  glue: string;
+  noneText?: string;
+  className?: string;
+}> = props => {
   const {
     renderer: Renderer,
     value,
@@ -66,19 +84,26 @@ const MultiSelectDropdown = props => {
     >
       <Dropdown.Toggle>{caption}</Dropdown.Toggle>
       <Dropdown.Menu className="multiselect-popover multiselect-checkboxes">
-        {checkBoxArray({
-          renderer: Renderer,
-          value,
-          options,
-          onItemChange,
-          tabIndex: -1
-        })}
+        <CheckBoxArray
+          renderer={Renderer}
+          value={value}
+          options={options}
+          onItemChange={onItemChange}
+          tabIndex={-1}
+        />
       </Dropdown.Menu>
     </StyledDropdown>
   );
 };
 
-const checkBoxArray = props => {
+const CheckBoxArray: React.FC<{
+  renderer: Renderer;
+  value: any[];
+  options: NormalizedOptions;
+  onItemChange: (index: number, checked: boolean) => void;
+  disabled?: boolean;
+  tabIndex?: number;
+}> = props => {
   const {
     renderer: Renderer,
     value = [],
@@ -88,31 +113,35 @@ const checkBoxArray = props => {
     tabIndex
   } = props;
 
-  return Object.keys(options).map((key, i) => {
-    const checked = value.some(sel => sel == key); // lazy equiality('==') needed
-    const checkedClass = checked ? 'checked' : '';
-    const renderItem = options[key];
-    return (
-      <StyledLi
-        key={i}
-        role="presentation"
-        onClick={() => {
-          !disabled && onItemChange(i, checked);
-        }}
-        className={checkedClass}
-      >
-        <input
-          type="checkbox"
-          checked={checked}
-          readOnly
-          tabIndex={tabIndex}
-          disabled={disabled}
-        />
-        &ensp;
-        <Renderer {...renderItem} renderAs="select" />
-      </StyledLi>
-    );
-  });
+  return (
+    <>
+      {Object.keys(options).map((key, i) => {
+        const checked = value.some(sel => sel == key); // lazy equiality('==') needed
+        const checkedClass = checked ? 'checked' : '';
+        const renderItem = options[key];
+        return (
+          <StyledLi
+            key={i}
+            role="presentation"
+            onClick={() => {
+              !disabled && onItemChange(i, checked);
+            }}
+            className={checkedClass}
+          >
+            <input
+              type="checkbox"
+              checked={checked}
+              readOnly
+              tabIndex={tabIndex}
+              disabled={disabled}
+            />
+            &ensp;
+            <Renderer {...renderItem} renderAs="select" />
+          </StyledLi>
+        );
+      })}
+    </>
+  );
 };
 
 /**
@@ -122,7 +151,7 @@ const MultiSelect: React.FC<{
   value: any[];
   onChange?: (value: any[]) => void;
   disabled?: boolean;
-  renderer?: React.ComponentType<any>;
+  renderer?: Renderer;
   showSelectedMax?: number;
   options: Options;
   type?: 'dropdown' | 'checkbox';
@@ -139,6 +168,7 @@ const MultiSelect: React.FC<{
     glue = ', ',
     noneText = '(None)',
     onChange,
+    numericalValue,
     className,
     disabled
   } = props;
@@ -146,17 +176,17 @@ const MultiSelect: React.FC<{
   // Normalize options
   const options = normalizeOptions(props.options);
 
-  const handleItemChange = (clickedIndex, checked) => {
-    const newValue = [];
+  const handleItemChange = (clickedIndex: number, checked: boolean) => {
+    const newValue: any[] = [];
     Object.keys(options).forEach((key, i) => {
-      const insertingKey = props.numericalValue ? parseFloat(key) : key;
+      const insertingKey = numericalValue ? parseFloat(key) : key;
       if (clickedIndex !== i) {
         if (value.indexOf(insertingKey) !== -1) newValue.push(insertingKey);
       } else {
         if (!checked) newValue.push(insertingKey);
       }
     });
-    typeof onChange === 'function' && onChange(newValue);
+    onChange?.(newValue);
   };
 
   if (type === 'dropdown') {
@@ -182,13 +212,13 @@ const MultiSelect: React.FC<{
     );
     return (
       <StyledUl className={classNames}>
-        {checkBoxArray({
-          value,
-          disabled,
-          options,
-          renderer,
-          onItemChange: handleItemChange
-        })}
+        <CheckBoxArray
+          value={value}
+          disabled={disabled}
+          options={options}
+          renderer={renderer}
+          onItemChange={handleItemChange}
+        />
       </StyledUl>
     );
   }

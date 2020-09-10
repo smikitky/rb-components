@@ -36,7 +36,10 @@ const StyledDropdown = styled(Dropdown)`
   }
 `;
 
-export type RelativeDate = null | string | [number, 'day' | 'week' | 'month'];
+export type RelativeDate =
+  | null
+  | string
+  | [number, 'day' | 'week' | 'month' | 'year'];
 
 type Mode = 'all' | 'absolute' | 'relative';
 

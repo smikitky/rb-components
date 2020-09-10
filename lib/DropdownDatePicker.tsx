@@ -21,7 +21,10 @@ const DropdownDatePicker: React.FC<{
   bsStyle?: string;
   block?: boolean;
 }> = props => {
-  const [yearMonth, setYearMonth] = useState(null);
+  const [yearMonth, setYearMonth] = useState<{
+    year: number;
+    month: number;
+  } | null>(null);
 
   const {
     value,
@@ -33,7 +36,7 @@ const DropdownDatePicker: React.FC<{
     onChange = () => {}
   } = props;
 
-  const handleToggle = isOpen => {
+  const handleToggle = (isOpen: boolean) => {
     if (!isOpen) return;
     const m = moment(value, format);
     if (m.isValid()) {

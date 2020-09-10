@@ -8,17 +8,14 @@ export type Options =
 
 export type NormalizedOptions = { [key: string]: NormalizedOption };
 
-const normalizeOptions = (options: Options): NormalizedOptions => {
-  const result = {};
+const normalizeOptions = (options: Options) => {
+  const result: NormalizedOptions = {};
   if (Array.isArray(options)) {
     options.forEach(opt => (result[opt] = { caption: opt }));
   } else {
     Object.keys(options).forEach(key => {
-      if (typeof options[key] === 'string') {
-        result[key] = { caption: options[key] };
-      } else {
-        result[key] = options[key];
-      }
+      const opt = options[key];
+      result[key] = typeof opt === 'string' ? { caption: opt } : opt;
     });
   }
   return result;

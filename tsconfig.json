@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "esModuleInterop": true,
+    "jsx": "react",
+    "lib": ["ES2016", "dom"]
+  }
+}

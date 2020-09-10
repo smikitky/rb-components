@@ -14,15 +14,15 @@ const SliderThumb: React.FC<{
 }> = props => {
   const { onMove, onStep } = props;
   const [dragging, setDragging] = useState(false);
-  const thumb = useRef<HTMLDivElement>();
+  const thumb = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleDocumentMouseUp = () => setDragging(false);
 
-    const handleDocumentMouseMove = ev => {
+    const handleDocumentMouseMove = (ev: MouseEvent) => {
       if (!dragging) return;
       const percentPos = getHorizontalPositionInElement(
-        thumb.current.parentNode as HTMLDivElement,
+        thumb.current!.parentNode as HTMLDivElement,
         ev.clientX
       );
       onMove(percentPos);
@@ -40,9 +40,9 @@ const SliderThumb: React.FC<{
     setDragging(true);
   };
 
-  const handleKeyDown = ev => {
+  const handleKeyDown = (ev: React.KeyboardEvent) => {
     if (typeof onStep !== 'function') return;
-    switch (keycode(ev)) {
+    switch (keycode(ev.keyCode)) {
       case 'left':
         onStep(-1);
         ev.preventDefault();
@@ -71,16 +71,21 @@ const SliderThumb: React.FC<{
   );
 };
 
-function valueToPercent(value, min, max) {
+const valueToPercent = (value: number, min: number, max: number) => {
   if (value < min) return 0;
   if (value > max) return 100;
   return ((value - min) / (max - min)) * 100;
-}
+};
 
-function percentToValue(percent, min, max, step) {
+const percentToValue = (
+  percent: number,
+  min: number,
+  max: number,
+  step: number
+) => {
   const numOfSteps = (max - min) / step;
   return min + (Math.round(percent * numOfSteps) * (max - min)) / numOfSteps;
-}
+};
 
 const ActiveTrack: React.FC<{
   percentLeft: number;

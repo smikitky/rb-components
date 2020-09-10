@@ -21,8 +21,8 @@ type DialogBase<T> = React.ComponentType<{
 
 type Dialog<T> = React.ComponentType<{
   onResolve: (value: T) => void;
-  onReject?: (value: any) => void;
-  onExited?: () => void;
+  onReject: (value: any) => void;
+  onExited: () => void;
   bsSize?: Sizes;
   backdrop?: string | boolean;
   className?: string;
@@ -45,8 +45,10 @@ const createDialog = <T extends any>(WrappedComponent: DialogBase<T>) => {
       isResolve.current = resolve;
     };
 
-    const handleResolve = settledValue => handleSettle(true, settledValue);
-    const handleReject = settledValue => handleSettle(false, settledValue);
+    const handleResolve = (settledValue: any) =>
+      handleSettle(true, settledValue);
+    const handleReject = (settledValue: any) =>
+      handleSettle(false, settledValue);
     const handleHide = () => handleSettle(true, null);
 
     const handleExited = () => {
@@ -212,14 +214,21 @@ export const choice = (
     cancelable = false,
     bsSize
   } = options;
-  if (Array.isArray(choices)) {
-    const obj = {};
-    choices.forEach(choice => (obj[choice] = choice));
-    choices = obj;
-  }
-  Object.keys(choices).forEach(key => {
-    if (typeof choices[key] !== 'object')
-      choices[key] = { response: choices[key], style: 'default' };
+
+  const normalizedChoices = Array.isArray(choices)
+    ? (() => {
+        const obj: { [key: string]: string | ButtonDef } = {};
+        choices.forEach(choice => (obj[choice] = choice));
+        return obj;
+      })()
+    : choices;
+
+  Object.keys(normalizedChoices).forEach(key => {
+    if (typeof normalizedChoices[key] !== 'object')
+      normalizedChoices[key] = {
+        response: normalizedChoices[key],
+        style: 'default'
+      };
   });
   return modal(
     props => (
@@ -326,7 +335,7 @@ const PromptDialog: React.FC<any> = props => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    inputRef.current.select();
+    inputRef.current!.select();
   }, []);
 
   const validate = (value: string) => {
@@ -335,7 +344,7 @@ const PromptDialog: React.FC<any> = props => {
     return typeof result === 'string' ? result : null;
   };
 
-  const [errorMessage, setErrorMessage] = useState<string>(() =>
+  const [errorMessage, setErrorMessage] = useState<string | null>(() =>
     validate(value)
   );
 

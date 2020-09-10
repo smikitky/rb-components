@@ -16,25 +16,26 @@ type Gradation = ColorStop[];
 
 const toHex = (color: string) => tinycolor(color).toHex8String();
 
-class Handle extends React.Component<
-  {
-    stopId: number;
-    value: ColorStop;
-    onUpdate: (stopId: number, updates: Partial<ColorStop>) => void;
-    onRemove: (stopId: number) => void;
-    disabled?: boolean;
-    numStops: number;
-  },
-  {
-    dragging: boolean;
-    dragged: boolean;
-    open: boolean;
-    dimmed: boolean;
-  }
-> {
+interface HandleProps {
+  stopId: number;
+  value: ColorStop;
+  onUpdate: (stopId: number, updates: Partial<ColorStop>) => void;
+  onRemove: (stopId: number) => void;
+  disabled?: boolean;
+  numStops: number;
+}
+
+interface HandleState {
+  dragging: boolean;
+  dragged: boolean;
+  open: boolean;
+  dimmed: boolean;
+}
+
+class Handle extends React.Component<HandleProps, HandleState> {
   private elem: React.RefObject<HTMLDivElement>;
 
-  constructor(props) {
+  constructor(props: HandleProps) {
     super(props);
     this.handleMouseDown = this.handleMouseDown.bind(this);
     this.handleDocumentMouseMove = this.handleDocumentMouseMove.bind(this);
@@ -50,21 +51,24 @@ class Handle extends React.Component<
     this.elem = React.createRef();
   }
 
-  static getDerivedStateFromProps(props, state) {
+  static getDerivedStateFromProps(
+    props: HandleProps,
+    state: Partial<HandleState>
+  ) {
     if (props.disabled) {
       return { dragging: false, dragged: false, open: false };
     }
     return null;
   }
 
-  handleDocumentMouseMove(ev) {
+  handleDocumentMouseMove(ev: MouseEvent) {
     const { disabled, onUpdate, stopId, numStops } = this.props;
     const removeThreshold = 30;
     ev.preventDefault();
     if (disabled) return;
     if (!this.state.dragging) return;
     this.setState({ dragged: true, open: false });
-    const preview = this.elem.current.parentNode.parentNode as HTMLDivElement;
+    const preview = this.elem.current!.parentNode!.parentNode as HTMLDivElement;
     const pos = getHorizontalPositionInElement(preview, ev.clientX);
     const box = preview.getBoundingClientRect();
     const dimmed =
@@ -91,7 +95,7 @@ class Handle extends React.Component<
     document.removeEventListener('mouseup', this.handleDocumentMouseUp);
   }
 
-  handleMouseDown(ev) {
+  handleMouseDown(ev: React.MouseEvent) {
     const { disabled } = this.props;
     if (disabled) return;
     document.addEventListener('mousemove', this.handleDocumentMouseMove);
@@ -107,7 +111,7 @@ class Handle extends React.Component<
     this.setState({ open: !this.state.open });
   }
 
-  handleColorChange(newColor) {
+  handleColorChange(newColor: string) {
     const { disabled, onUpdate, stopId } = this.props;
     if (disabled) return;
     if (this.state.dragged) return;
@@ -135,7 +139,7 @@ class Handle extends React.Component<
         />
         <Overlay
           show={open}
-          target={this.elem.current}
+          target={this.elem.current!}
           placement="top"
           animation={false}
         >
@@ -152,7 +156,7 @@ class Handle extends React.Component<
   }
 }
 
-const buildGradient = value =>
+const buildGradient = (value: Gradation) =>
   'linear-gradient(to right, ' +
   value.map(h => toHex(h.color) + ' ' + h.position * 100 + '%').join(', ') +
   ')';
@@ -215,19 +219,23 @@ const StyledDiv = styled.div`
   }
 `;
 
-export default class GradationEditor extends React.Component<{
+interface GradationEditorProps {
   value: Gradation;
   onChange: (value: Gradation) => void;
   disabled?: boolean;
   maxStops?: number;
   className?: string;
   block?: boolean;
-}> {
+}
+
+export default class GradationEditor extends React.Component<
+  GradationEditorProps
+> {
   private counter: number;
   private map: Map<ColorStop, number>;
   private preview: React.RefObject<HTMLDivElement>;
 
-  constructor(props) {
+  constructor(props: GradationEditorProps) {
     super(props);
     this.handleColorStopUpdate = this.handleColorStopUpdate.bind(this);
     this.handleAddColorStop = this.handleAddColorStop.bind(this);
@@ -237,7 +245,7 @@ export default class GradationEditor extends React.Component<{
     this.preview = React.createRef();
   }
 
-  handleColorStopUpdate(stopId, updates) {
+  handleColorStopUpdate(stopId: number, updates: Partial<ColorStop>) {
     const { value, onChange } = this.props;
     const newValue = value
       .map(s => {
@@ -254,7 +262,7 @@ export default class GradationEditor extends React.Component<{
     onChange(newValue);
   }
 
-  handleColorStopRemove(stopId) {
+  handleColorStopRemove(stopId: number) {
     const { value, onChange } = this.props;
     const newValue = value.filter(s => {
       if (this.map.get(s) === stopId) {
@@ -266,13 +274,13 @@ export default class GradationEditor extends React.Component<{
     onChange(newValue);
   }
 
-  handleAddColorStop(ev) {
+  handleAddColorStop(ev: React.MouseEvent) {
     const { disabled, value, onChange, maxStops } = this.props;
     if (disabled) return;
     if (typeof maxStops === 'number' && value.length >= maxStops) return;
     const newValue = value.slice();
     const position = getHorizontalPositionInElement(
-      this.preview.current,
+      this.preview.current!,
       ev.clientX
     );
     newValue.push({ position, color: '#ffffffff' });

@@ -86,7 +86,7 @@ const ControlledCalendar: React.FC<{
     [month, year, onYearMonthChange]
   );
 
-  const divRef = useRef(null);
+  const divRef = useRef<HTMLDivElement>(null);
 
   const prevYear = useCallback(() => nav(-1, 'year'), [nav]);
   const nextYear = useCallback(() => nav(+1, 'year'), [nav]);
@@ -94,13 +94,13 @@ const ControlledCalendar: React.FC<{
   const nextMonth = useCallback(() => nav(+1, 'month'), [nav]);
 
   useEffect(() => {
-    const handleWheel = ev => {
+    const handleWheel = (ev: WheelEvent) => {
       if (disabled) return;
       ev.preventDefault();
       if (ev.deltaY > 0) nextMonth();
       if (ev.deltaY < 0) prevMonth();
     };
-    const div = divRef.current;
+    const div = divRef.current!;
     div.addEventListener('wheel', handleWheel, { passive: false });
     return () => {
       div.removeEventListener('wheel', handleWheel);
@@ -144,13 +144,17 @@ export const Calendar = uncontrollable(ControlledCalendar, {
 });
 export default Calendar;
 
-const Navicon = ({ glyph, onClick, disabled }) => (
+const Navicon: React.FC<{
+  glyph: string;
+  onClick: () => void;
+  disabled?: boolean;
+}> = ({ glyph, onClick, disabled }) => (
   <Button bsSize="xs" bsStyle="link" onClick={onClick} disabled={disabled}>
     <Glyphicon glyph={glyph} />
   </Button>
 );
 
-const split = (array, every) => {
+const split = <T extends any>(array: T[], every: number): T[][] => {
   const result = [];
   let i = 0;
   while (i < array.length) {
@@ -176,8 +180,8 @@ const CalendarTable: React.FC<{
     format = defaultDateFormat
   } = props;
 
-  const tbodyRef = useRef<HTMLTableSectionElement>();
-  const tableRef = useRef();
+  const tbodyRef = useRef<HTMLTableSectionElement>(null);
+  const tableRef = useRef<HTMLTableElement>(null);
 
   const handleDateSelect = useCallback(
     ev => {
@@ -191,7 +195,7 @@ const CalendarTable: React.FC<{
   );
 
   const focusRelative = useCallback((ev, delta) => {
-    const children = Array.from(tbodyRef.current.querySelectorAll('td'));
+    const children = Array.from(tbodyRef.current!.querySelectorAll('td'));
     const fromDate = moment.unix(ev.target.dataset.date);
     const toDate = fromDate.add(delta, 'day').unix();
     const nextNode = children.find(el => el.dataset.date === String(toDate));
@@ -204,7 +208,7 @@ const CalendarTable: React.FC<{
 
   const handleTableFocus = useCallback(
     ev => {
-      const children = Array.from(tbodyRef.current.querySelectorAll('td'));
+      const children = Array.from(tbodyRef.current!.querySelectorAll('td'));
       if (ev.target === tableRef.current) {
         const valueMoment =
           value !== undefined ? moment(value, format).unix() : undefined;
@@ -212,7 +216,7 @@ const CalendarTable: React.FC<{
           el => el.dataset.date === String(valueMoment)
         );
         if (selected) selected.focus();
-        else tbodyRef.current.querySelector('td').focus();
+        else tbodyRef.current!.querySelector('td')?.focus();
       }
       setHasFocus(true);
     },
@@ -268,7 +272,7 @@ const CalendarTable: React.FC<{
   }
   const weeks = split(days, 7);
 
-  const day = date => {
+  const day = (date: moment.Moment) => {
     const classNames = classnames({
       selected: valueMoment && date.isSame(valueMoment, 'day'),
       'not-this-month': date.month() !== month - 1

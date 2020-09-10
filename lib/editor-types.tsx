@@ -11,7 +11,7 @@ import { Options } from './utils/normalizeOptions';
 export type Editor<T> = React.FC<{
   value: T;
   onChange: (value: T) => void;
-  disabled: boolean;
+  disabled?: boolean;
 }>;
 
 /**
@@ -50,18 +50,18 @@ const formControl = <T extends any = string>(
   return result;
 };
 
-export const text = options => formControl({ ...options, type: 'text' });
+export const text = (options: any) => formControl({ ...options, type: 'text' });
 
-export const password = options =>
+export const password = (options: any) =>
   formControl({ ...options, type: 'password' });
 
-export const number = options =>
+export const number = (options: any) =>
   formControl<number>({ ...options, type: 'number' }, parseFloat);
 
-export const integer = options =>
+export const integer = (options: any) =>
   formControl<number>({ ...options, type: 'number' }, parseInt);
 
-export const textarea = options =>
+export const textarea = (options: any) =>
   formControl({ ...options, componentClass: 'textarea' });
 
 export const checkbox = (options: { label: string }) => {
@@ -128,11 +128,11 @@ export const multiSelect = <T extends string | number = string>(
  */
 export const arrayOf = <T extends any>(
   editor: Editor<T>,
-  newItemValue: any = '',
+  newItemValue: () => T | T,
   inline?: boolean
 ) => {
   const result: Editor<T[]> = props => (
-    <ArrayEditor
+    <ArrayEditor<T>
       editor={editor}
       newItemValue={newItemValue}
       inline={!!inline}

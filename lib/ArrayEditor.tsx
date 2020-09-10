@@ -24,7 +24,7 @@ const StyledUl = styled.ul`
   }
 `;
 
-interface Props<T> {
+interface ArrayEditorProps<T> {
   value: T[];
   onChange: (value: T[]) => any;
   disabled?: boolean;
@@ -38,20 +38,20 @@ interface Props<T> {
  * Renders an editor for generic items.
  * The 'editor' is a React component that accepts 'value' and 'onChange'.
  */
-const ArrayEditor: <T extends any>(
-  props: Props<T>
-) => React.ReactElement<Props<T>> = props => {
+const ArrayEditor = <T extends any>(
+  props: ArrayEditorProps<T>
+): React.ReactElement => {
   const {
     value = [],
     inline = false,
-    newItemValue = null,
+    newItemValue,
     editor: Editor,
     className,
     onChange = () => {},
     disabled
   } = props;
 
-  const handleChange = (index, newValue) => {
+  const handleChange = (index: number, newValue: T) => {
     if (disabled) return;
     const newList = value.slice();
     newList[index] = newValue;
@@ -65,7 +65,7 @@ const ArrayEditor: <T extends any>(
     onChange(newList);
   };
 
-  const handleRemove = index => {
+  const handleRemove = (index: number) => {
     const newList = value.slice();
     newList.splice(index, 1);
     onChange(newList);
@@ -105,4 +105,4 @@ const ArrayEditor: <T extends any>(
   );
 };
 
-export default React.memo(ArrayEditor);
+export default ArrayEditor;
