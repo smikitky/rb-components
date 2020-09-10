@@ -13,7 +13,7 @@ const StyledDiv = styled.div<{ disabled?: boolean }>`
   grid-template-columns: auto 1fr;
   grid-gap: 1px 10px;
   line-height: 1.5em;
-  opacity: ${props => (props.disabled ? 0.7 : 1.0)};
+  opacity: ${(props: any) => (props.disabled ? 0.7 : 1.0)};
   input,
   select {
     border: 1px solid silver;

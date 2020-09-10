@@ -3,6 +3,8 @@
     "strict": true,
     "esModuleInterop": true,
     "jsx": "react",
-    "lib": ["ES2016", "dom"]
-  }
+    "lib": ["es2016", "dom"],
+    "noEmit": true
+  },
+  "include": ["./lib/**/*"]
 }
