@@ -319,9 +319,15 @@ export const prompt = (
 
 const PromptDialog: React.FC<any> = props => {
   const { icon, password, title, text, onResolve, validator } = props;
-  const [value, setValue] = useState(() =>
+  const [value, setValue] = useState<string>(() =>
     typeof props.value === 'string' ? props.value : ''
   );
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    inputRef.current.select();
+  }, []);
 
   const validate = (value: string) => {
     if (typeof validator !== 'function') return null;
@@ -339,7 +345,7 @@ const PromptDialog: React.FC<any> = props => {
     setErrorMessage(validate(value));
   };
 
-  const handleKeyDown = (event: React.KeyboardEvent<FormControl>) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.keyCode == keycode.codes.enter) {
       handleOkClick();
     }
@@ -362,8 +368,10 @@ const PromptDialog: React.FC<any> = props => {
       <Modal.Body>
         <div className={classnames('form-group', { 'has-error': isError })}>
           <label className="control-label">{text}</label>
-          <FormControl
-            type={type}
+          <input
+            type="text"
+            className="form-control"
+            ref={inputRef}
             autoFocus
             value={value}
             onChange={handleChange}
