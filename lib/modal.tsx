@@ -136,7 +136,7 @@ export const modal = <T extends any>(
 };
 
 interface DialogOptions {
-  title?: string | React.ReactElement;
+  title?: React.ReactChild;
   icon?: string;
   cancelable?: boolean;
   bsSize?: Sizes;
@@ -145,10 +145,7 @@ interface DialogOptions {
 /**
  * Async version of native `alert`, with some options.
  */
-export const alert = (
-  text: string | React.ReactElement,
-  options: DialogOptions = {}
-) => {
+export const alert = (text: React.ReactChild, options: DialogOptions = {}) => {
   const {
     title = 'Message',
     icon = 'info-sign',
@@ -165,7 +162,7 @@ export const alert = (
  * Async version of native `confirm`, with some options.
  */
 export const confirm = (
-  text: string | React.ReactElement,
+  text: React.ReactChild,
   options: DialogOptions = {}
 ) => {
   const {
@@ -205,7 +202,7 @@ type Choices = string[] | { [key: string]: string | ButtonDef };
  *   Resolves with null if dialog's close button is clicked.
  */
 export const choice = (
-  text: string | React.ReactElement,
+  text: React.ReactChild,
   choices: Choices,
   options: DialogOptions = {}
 ) => {
@@ -252,8 +249,8 @@ const IconOrElement: React.FC<{ icon: any }> = ({ icon }) => {
 
 const ChoiceDialog: React.FC<{
   icon: string;
-  title: string | React.ReactElement;
-  text: string | React.ReactElement;
+  title: React.ReactChild;
+  text: React.ReactChild;
   buttons: Buttons;
   closeButton?: boolean;
   onResolve: (value: any) => void;
@@ -293,7 +290,7 @@ const ChoiceDialog: React.FC<{
  * @returns The string input by the user.
  */
 export const prompt = (
-  text: string | React.ReactElement,
+  text: React.ReactChild,
   value: string,
   options: DialogOptions & { password?: boolean; validator?: Function } = {}
 ): Promise<string | null> => {
@@ -394,7 +391,7 @@ const PromptDialog: React.FC<any> = props => {
  * @returns Settles with the same value as the passed promise.
  */
 export const withProgressDialog = (
-  text: string | React.ReactElement,
+  text: React.ReactChild,
   task: Promise<any>
 ) => {
   return modal(props => <ProgressDialog text={text} task={task} {...props} />, {
@@ -405,7 +402,7 @@ export const withProgressDialog = (
 const ProgressDialog: React.FC<{
   onResolve: (value: any) => void;
   onReject: (value: any) => void;
-  text: string | React.ReactElement;
+  text: React.ReactChild;
   task: Promise<any>;
 }> = props => {
   const { text, task, onResolve, onReject } = props;
