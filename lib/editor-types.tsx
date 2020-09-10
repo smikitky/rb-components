@@ -50,18 +50,19 @@ const formControl = <T extends any = string>(
   return result;
 };
 
-export const text = (options: any) => formControl({ ...options, type: 'text' });
+export const text = (options: any = {}) =>
+  formControl({ ...options, type: 'text' });
 
-export const password = (options: any) =>
+export const password = (options: any = {}) =>
   formControl({ ...options, type: 'password' });
 
-export const number = (options: any) =>
+export const number = (options: any = {}) =>
   formControl<number>({ ...options, type: 'number' }, parseFloat);
 
-export const integer = (options: any) =>
+export const integer = (options: any = {}) =>
   formControl<number>({ ...options, type: 'number' }, parseInt);
 
-export const textarea = (options: any) =>
+export const textarea = (options: any = {}) =>
   formControl({ ...options, componentClass: 'textarea' });
 
 export const checkbox = (options: { label: string }) => {
@@ -128,7 +129,7 @@ export const multiSelect = <T extends string | number = string>(
  */
 export const arrayOf = <T extends any>(
   editor: Editor<T>,
-  newItemValue: () => T | T,
+  newItemValue: T | ((values: T[]) => T),
   inline?: boolean
 ) => {
   const result: Editor<T[]> = props => (

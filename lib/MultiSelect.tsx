@@ -186,7 +186,7 @@ const MultiSelect: React.FC<{
         if (!checked) newValue.push(insertingKey);
       }
     });
-    onChange?.(newValue);
+    onChange && onChange(newValue);
   };
 
   if (type === 'dropdown') {

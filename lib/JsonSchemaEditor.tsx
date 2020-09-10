@@ -189,7 +189,7 @@ const EnumProp: PropEdit<any> = props => {
   const { enum: options } = schema;
   const [input, setInput] = useState<string | number | undefined>(value);
 
-  if (!options?.length) throw new Error('enum not set');
+  if (!options || !options.length) throw new Error('enum not set');
 
   useEffect(
     () => {

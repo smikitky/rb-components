@@ -216,7 +216,7 @@ const CalendarTable: React.FC<{
           el => el.dataset.date === String(valueMoment)
         );
         if (selected) selected.focus();
-        else tbodyRef.current!.querySelector('td')?.focus();
+        else tbodyRef.current!.querySelector('td')!.focus();
       }
       setHasFocus(true);
     },

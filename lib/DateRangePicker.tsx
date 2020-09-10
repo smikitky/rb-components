@@ -58,8 +58,8 @@ const DateRangePicker: React.FC<{
 
   const presetSelect = (key: string) => {
     const newValue = {
-      from: presets[key].from ?? [0, 'day'],
-      to: presets[key].to ?? [0, 'day']
+      from: presets[key].from || [0, 'day'],
+      to: presets[key].to || [0, 'day']
     };
     onChange(newValue);
   };
