@@ -40,7 +40,7 @@ interface ArrayEditorProps<T> {
  */
 const ArrayEditor = <T extends any>(
   props: ArrayEditorProps<T>
-): React.ReactElement => {
+): React.ReactElement<ArrayEditorProps<T>> => {
   const {
     value = [],
     inline = false,
@@ -105,4 +105,6 @@ const ArrayEditor = <T extends any>(
   );
 };
 
-export default ArrayEditor;
+export default React.memo(ArrayEditor) as <T extends any>(
+  props: ArrayEditorProps<T>
+) => React.ReactElement<ArrayEditorProps<T>>;

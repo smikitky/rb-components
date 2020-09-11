@@ -57,9 +57,9 @@ interface Props<P = any> {
  * using the higher-order function technique.
  * Some basic editors can be made via property-editor-types.
  */
-const PropertyEditor: <P extends object = {}>(
+const PropertyEditor = <P extends object = {}>(
   props: Props<P>
-) => React.ReactElement<Props<P>> = props => {
+): React.ReactElement<Props<P>> => {
   const {
     value,
     onChange,
@@ -121,4 +121,6 @@ const PropertyEditor: <P extends object = {}>(
   return <StyledDiv className={classNames}>{rows}</StyledDiv>;
 };
 
-export default React.memo(PropertyEditor);
+export default React.memo(PropertyEditor) as <P extends object = {}>(
+  props: Props<P>
+) => React.ReactElement<Props<P>>;
