@@ -27,22 +27,28 @@ const StyledDropdown = styled(Dropdown)`
   }
 `;
 
-export interface ShrinkSelectProps {
+export interface ShrinkSelectProps<T extends string | number = string> {
   options: Options;
-  value: string | number;
-  defaultSelect?: string | number;
-  onChange?: (value: string | number) => void;
+  value: T;
+  defaultSelect?: T;
+  onChange?: (value: T) => void;
   bsSize?: string;
   bsStyle?: string;
   block?: boolean;
   disabled?: boolean;
   className?: string;
   renderer?: React.ComponentType<any>;
+  /**
+   * Set to true to use a number as a `value`
+   */
   numericalValue?: boolean;
 }
 
-const ShrinkSelect: React.FC<ShrinkSelectProps> = props => {
+const ShrinkSelect = <T extends string | number = string>(
+  props: ShrinkSelectProps<T>
+): React.ReactElement<ShrinkSelectProps<T>> => {
   const {
+    value,
     defaultSelect = null,
     onChange = () => {},
     bsSize = undefined,
@@ -56,8 +62,8 @@ const ShrinkSelect: React.FC<ShrinkSelectProps> = props => {
 
   const options = normalizeOptions(props.options);
 
-  const title =
-    props.value in options ? (
+  const title: React.ReactChild =
+    value in options ? (
       <Renderer {...options[props.value]} />
     ) : defaultSelect !== null ? (
       options[defaultSelect].caption
@@ -67,7 +73,7 @@ const ShrinkSelect: React.FC<ShrinkSelectProps> = props => {
 
   const handleChange = (key: string) => {
     if (typeof onChange === 'function') {
-      onChange(numericalValue ? parseFloat(key) : key);
+      onChange((numericalValue ? parseFloat(key) : key) as T);
     }
   };
 
