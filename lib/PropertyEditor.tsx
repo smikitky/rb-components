@@ -14,25 +14,26 @@ const StyledDiv = styled.div`
   }
 `;
 
-export interface PropertyEditorProperty<P, K extends Extract<keyof P, string>> {
+export interface PropertyEditorProperty<K, V> {
   key: K;
-  editor: Editor<P[K]>;
+  editor: Editor<V>;
   caption?: string;
   className?: string;
 }
 
-export type PropertyEditorProperties<P = any> = (
+// https://stackoverflow.com/q/62405615/1209240
+export type PropertyEditorProperties<P extends object> = (
   | string
-  | PropertyEditorProperty<P, Extract<keyof P, string>>
+  | { [K in keyof P]: PropertyEditorProperty<K, P[K]> }[keyof P]
 )[];
 
-interface Props<P = any> {
+interface Props<P extends object> {
   properties: PropertyEditorProperties<P>;
-  value: any;
+  value: P;
   complaints?: {
-    [key: string]: string;
+    [key in keyof P]?: string;
   };
-  onChange: (value: any, key: string) => void;
+  onChange: (value: P, key: keyof P) => void;
   disabled?: boolean;
   /**
    * Used to override default class
@@ -55,15 +56,15 @@ interface Props<P = any> {
  * Each 'editor' in a row is a React component that accepts 'value' and 'onChange'.
  * Other props of the underlying editor, if any, can be bound to the editor
  * using the higher-order function technique.
- * Some basic editors can be made via property-editor-types.
+ * Some basic editors can be made via editor-types.
  */
-const PropertyEditor = <P extends object = {}>(
+const PropertyEditor = <P extends object>(
   props: Props<P>
 ): React.ReactElement<Props<P>> => {
   const {
     value,
     onChange,
-    complaints = {},
+    complaints,
     properties = [],
     bsClass = 'property-editor',
     className,
@@ -76,7 +77,7 @@ const PropertyEditor = <P extends object = {}>(
     complaintClassName = 'text-danger'
   } = props;
 
-  const handleChange = (key: string, val: any) => {
+  const handleChange = <K extends keyof P>(key: K, val: P[K]) => {
     if (disabled) return;
     const newValues = { ...value, [key]: val };
     onChange(newValues, key);
@@ -97,7 +98,7 @@ const PropertyEditor = <P extends object = {}>(
       [hasComplaintClassName]: hasComplaint
     });
     const row = [
-      <div key={key} className={classNames}>
+      <div key={key as string} className={classNames}>
         <div className={keyClassName}>
           <label className={labelClassName}>{caption ? caption : key}</label>
         </div>
@@ -111,7 +112,7 @@ const PropertyEditor = <P extends object = {}>(
       </div>
     ];
     if (hasComplaint) {
-      row.push(<div className={complaintClassName}>{complaints[key]}</div>);
+      row.push(<div className={complaintClassName}>{complaints![key]}</div>);
     }
     return row;
   });
