@@ -6,7 +6,6 @@ import React, { useState, useRef, Fragment, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import keycode from 'keycode';
 import Button from 'react-bootstrap/lib/Button';
-import FormControl from 'react-bootstrap/lib/FormControl';
 import Modal from 'react-bootstrap/lib/Modal';
 import ProgressBar from 'react-bootstrap/lib/ProgressBar';
 import Icon from './Icon';
@@ -300,7 +299,7 @@ const ChoiceDialog: React.FC<{
  */
 export const prompt = (
   text: React.ReactChild,
-  value: string,
+  value?: string,
   options: DialogOptions & { password?: boolean; validator?: Function } = {}
 ): Promise<string | null> => {
   const {
@@ -326,7 +325,15 @@ export const prompt = (
   ) as Promise<string | null>;
 };
 
-const PromptDialog: React.FC<any> = props => {
+const PromptDialog: React.FC<{
+  icon?: any;
+  password?: boolean;
+  title?: React.ReactChild;
+  text: React.ReactChild;
+  onResolve: (value: any) => void;
+  value?: string;
+  validator?: any;
+}> = props => {
   const { icon, password, title, text, onResolve, validator } = props;
   const [value, setValue] = useState<string>(() =>
     typeof props.value === 'string' ? props.value : ''
@@ -366,7 +373,6 @@ const PromptDialog: React.FC<any> = props => {
   };
 
   const isError = typeof errorMessage === 'string';
-  const type = password ? 'password' : 'text';
 
   return (
     <div>
@@ -378,7 +384,7 @@ const PromptDialog: React.FC<any> = props => {
         <div className={classnames('form-group', { 'has-error': isError })}>
           <label className="control-label">{text}</label>
           <input
-            type="text"
+            type={password ? 'password' : 'text'}
             className="form-control"
             ref={inputRef}
             autoFocus
