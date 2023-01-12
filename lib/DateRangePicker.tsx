@@ -8,6 +8,8 @@ import RelativeDatePicker, {
 import { Sizes } from 'react-bootstrap';
 import { defaultDateFormat } from './Calendar';
 
+const today: RelativeDate = [0, 'day'];
+
 const presets: {
   [key: string]: {
     caption: string;
@@ -15,13 +17,13 @@ const presets: {
     to?: RelativeDate;
   };
 } = {
-  today: { caption: 'Today' },
+  today: { caption: 'Today', from: today, to: today },
   yesterday: { caption: 'Yesterday', from: [-1, 'day'], to: [-1, 'day'] },
-  last2days: { caption: 'Last 2 days', from: [-1, 'day'] },
-  last1week: { caption: 'Last 1 Week', from: [-6, 'day'] },
-  last1month: { caption: 'Last 1 month', from: [-1, 'month'] },
-  last6months: { caption: 'Last 3 months', from: [-3, 'month'] },
-  last1year: { caption: 'Last 1 year', from: [-1, 'year'] },
+  last2days: { caption: 'Last 2 days', from: [-1, 'day'], to: today },
+  last1week: { caption: 'Last 1 Week', from: [-6, 'day'], to: today },
+  last1month: { caption: 'Last 1 month', from: [-1, 'month'], to: today },
+  last6months: { caption: 'Last 3 months', from: [-3, 'month'], to: today },
+  last1year: { caption: 'Last 1 year', from: [-1, 'year'], to: today },
   all: { caption: 'All', from: null, to: null }
 };
 
@@ -58,8 +60,8 @@ const DateRangePicker: React.FC<{
 
   const presetSelect = (key: string) => {
     const newValue = {
-      from: presets[key].from || [0, 'day'],
-      to: presets[key].to || [0, 'day']
+      from: presets[key].from || null,
+      to: presets[key].to || null
     };
     onChange(newValue);
   };
@@ -112,7 +114,7 @@ export const dateRangeToMongoQuery = (
   const result: any = { $and: [] };
   const from = normalizeRelative(condition.from);
   if (from) result.$and.push({ [key]: { $gte: { $date: from } } });
-  const to = normalizeRelative(condition.to);
-  if (to) result.$and.push({ [key]: { $lte: { $date: to } } });
+  const to = normalizeRelative(condition.to, true);
+  if (to) result.$and.push({ [key]: { $lt: { $date: to } } });
   return from || to ? result : null;
 };

@@ -152,15 +152,22 @@ const RelativeDatePicker: React.FC<{
 
 export default React.memo(RelativeDatePicker);
 
+/**
+ * @param dateValue The value to process.
+ * @param asMax Returns the end of the day if true, the start of the day if false
+ * @returns A moment object or null if the value is invalid.
+ */
 export const normalizeRelative = (
-  dateValue: RelativeDate
+  dateValue: RelativeDate,
+  asMax: boolean = false
 ): moment.Moment | null => {
   if (typeof dateValue === 'string') {
-    return moment(dateValue);
+    return asMax ? moment(dateValue).add(1, 'day') : moment(dateValue);
   } else if (dateValue === null) {
     return null;
   } else if (Array.isArray(dateValue)) {
-    return moment().startOf('day').add(dateValue[0], dateValue[1]);
+    const tmp = moment().startOf('day').add(dateValue[0], dateValue[1]);
+    return asMax ? tmp.add(1, 'day') : tmp;
   }
   return null;
 };
