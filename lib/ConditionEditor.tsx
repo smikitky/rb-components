@@ -10,7 +10,7 @@ import moment from 'moment';
 import normalizeOptions from './utils/normalizeOptions';
 import styled from 'styled-components';
 import { Sizes } from 'react-bootstrap';
-
+import { normalizeRelative } from './RelativeDatePicker';
 const escapeRegExp = (str: string) => {
   str = str + '';
   return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
@@ -464,10 +464,14 @@ const ToolButton: React.FC<{
  */
 export const conditionToMongoQuery = (
   condition: Node,
-  dateFields: string[] = []
+  dateFields: string[] = [],
+  useNormalizeRelative: boolean = false
 ): object => {
   const binary2obj = (key: string, op: Operator, value: any) => {
-    if (dateFields.indexOf(key) >= 0) value = { $date: value };
+    if (dateFields.indexOf(key) >= 0)
+      value = {
+        $date: useNormalizeRelative ? normalizeRelative(value) : value
+      };
     switch (op) {
       case '==':
         return { [key]: value };

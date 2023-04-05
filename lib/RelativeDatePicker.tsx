@@ -155,19 +155,36 @@ export default React.memo(RelativeDatePicker);
 /**
  * @param dateValue The value to process.
  * @param asMax Returns the end of the day if true, the start of the day if false
+ * @param asUtc Returns the UTC if true, the localtime if false
  * @returns A moment object or null if the value is invalid.
  */
+
 export const normalizeRelative = (
   dateValue: RelativeDate,
-  asMax: boolean = false
+  asMax: boolean = false,
+  asUtc: boolean = false
 ): moment.Moment | null => {
+  const createMoment = (value?: Exclude<RelativeDate, null>) => {
+    if (asUtc) {
+      return value ? moment.utc(value) : moment.utc();
+    }
+    return value ? moment(value) : moment();
+  };
+
   if (typeof dateValue === 'string') {
-    return asMax ? moment(dateValue).add(1, 'day') : moment(dateValue);
+    let result = createMoment(dateValue);
+    if (asMax) {
+      result = result.add(1, 'day');
+    }
+    return result;
   } else if (dateValue === null) {
     return null;
   } else if (Array.isArray(dateValue)) {
-    const tmp = moment().startOf('day').add(dateValue[0], dateValue[1]);
-    return asMax ? tmp.add(1, 'day') : tmp;
+    let result = createMoment().startOf('day').add(dateValue[0], dateValue[1]);
+    if (asMax) {
+      result = result.add(1, 'day');
+    }
+    return result;
   }
   return null;
 };
