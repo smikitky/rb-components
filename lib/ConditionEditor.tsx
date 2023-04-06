@@ -11,6 +11,7 @@ import normalizeOptions from './utils/normalizeOptions';
 import styled from 'styled-components';
 import { Sizes } from 'react-bootstrap';
 import { normalizeRelative } from './RelativeDatePicker';
+
 const escapeRegExp = (str: string) => {
   str = str + '';
   return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
@@ -465,13 +466,41 @@ const ToolButton: React.FC<{
 export const conditionToMongoQuery = (
   condition: Node,
   dateFields: string[] = [],
-  useNormalizeRelative: boolean = false
+  useNormalizeRelative: boolean = false,
+  asUtc: boolean = false
 ): object => {
+  const binary2obj4date = (key: string, op: Operator, value: any) => {
+    const dateValue = {
+      $date: normalizeRelative(value, false, asUtc)
+    };
+    const nextDateValue = {
+      $date: normalizeRelative(value, true, asUtc)
+    };
+    switch (op) {
+      case '==':
+        return [
+          { [key]: { $gte: dateValue } },
+          { [key]: { $lt: nextDateValue } }
+        ];
+      case '!=':
+        return [
+          { [key]: { $lt: dateValue } },
+          { [key]: { $gte: nextDateValue } }
+        ];
+      case '>':
+        return { [key]: { $gte: nextDateValue } };
+      case '<':
+        return { [key]: { $lt: dateValue } };
+      case '>=':
+        return { [key]: { $gte: dateValue } };
+      case '<=':
+        return { [key]: { $lt: nextDateValue } };
+      default:
+        throw new Error('Invalid operator for date field');
+    }
+  };
   const binary2obj = (key: string, op: Operator, value: any) => {
-    if (dateFields.indexOf(key) >= 0)
-      value = {
-        $date: useNormalizeRelative ? normalizeRelative(value) : value
-      };
+    if (dateFields.indexOf(key) >= 0) value = { $date: value };
     switch (op) {
       case '==':
         return { [key]: value };
@@ -496,14 +525,28 @@ export const conditionToMongoQuery = (
 
   if ('$and' in condition) {
     return {
-      $and: condition.$and.map(m => conditionToMongoQuery(m, dateFields))
+      $and: condition.$and.reduce(
+        (acc: any[], m: Node) =>
+          acc.concat(
+            conditionToMongoQuery(m, dateFields, useNormalizeRelative)
+          ),
+        []
+      )
     };
   } else if ('$or' in condition) {
     return {
-      $or: condition.$or.map(m => conditionToMongoQuery(m, dateFields))
+      $or: condition.$or.reduce(
+        (acc: any[], m: Node) =>
+          acc.concat(
+            conditionToMongoQuery(m, dateFields, useNormalizeRelative)
+          ),
+        []
+      )
     };
   } else if ('keyName' in condition) {
-    return binary2obj(condition.keyName, condition.op, condition.value);
+    return useNormalizeRelative && dateFields.indexOf(condition.keyName) >= 0
+      ? binary2obj4date(condition.keyName, condition.op, condition.value)
+      : binary2obj(condition.keyName, condition.op, condition.value);
   } else {
     throw new Error('Malformed node');
   }
