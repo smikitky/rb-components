@@ -1,6 +1,6 @@
 {
   "name": "@smikitky/rb-components",
-  "version": "6.1.1",
+  "version": "7.0.0",
   "description": "Components for React-Bootstrap",
   "scripts": {
     "start": "webpack-dev-server",
