@@ -75,6 +75,28 @@ export type Node = GroupNode | SingleNode;
 
 export type Condition = GroupNode;
 
+type MongoQueryOperator =
+  | { $ne: any }
+  | { $gt: any }
+  | { $lt: any }
+  | { $gte: any }
+  | { $lte: any }
+  | { $regex: string };
+
+type MongoQuery = {
+  [key: string]: any | MongoQueryOperator;
+};
+
+type MongoQueryLogicalOperator =
+  | {
+      $and: MongoQuery[];
+    }
+  | {
+      $or: MongoQuery[];
+    };
+
+type MongoQueryResult = MongoQuery | MongoQueryLogicalOperator;
+
 const ConditionEditor: React.FC<{
   keys: Keys;
   value: Condition;
@@ -468,7 +490,7 @@ export const conditionToMongoQuery = (
   dateFields: string[] = [],
   useNormalizeRelative: boolean = false,
   asUtc: boolean = false
-): object => {
+): MongoQueryResult => {
   const binary2obj4date = (key: string, op: Operator, value: any) => {
     const dateValue = {
       $date: normalizeRelative(value, false, asUtc)
@@ -525,22 +547,14 @@ export const conditionToMongoQuery = (
 
   if ('$and' in condition) {
     return {
-      $and: condition.$and.reduce(
-        (acc: any[], m: Node) =>
-          acc.concat(
-            conditionToMongoQuery(m, dateFields, useNormalizeRelative)
-          ),
-        []
+      $and: condition.$and.flatMap((m: Node) =>
+        conditionToMongoQuery(m, dateFields, useNormalizeRelative)
       )
     };
   } else if ('$or' in condition) {
     return {
-      $or: condition.$or.reduce(
-        (acc: any[], m: Node) =>
-          acc.concat(
-            conditionToMongoQuery(m, dateFields, useNormalizeRelative)
-          ),
-        []
+      $or: condition.$or.flatMap((m: Node) =>
+        conditionToMongoQuery(m, dateFields, useNormalizeRelative)
       )
     };
   } else if ('keyName' in condition) {
